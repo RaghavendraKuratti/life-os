@@ -1,0 +1,288 @@
+.karma-container {
+  padding: 16px;
+  min-height: 100%;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 16px;
+
+  p {
+    color: var(--ion-color-medium);
+    font-size: 14px;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 32px 16px;
+
+  .rocket-icon {
+    font-size: 80px;
+    margin-bottom: 24px;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--ion-color-dark);
+  }
+
+  p {
+    color: var(--ion-color-medium);
+    font-size: 14px;
+    margin-bottom: 32px;
+    line-height: 1.5;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.enemies-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+
+  .enemy-card {
+    background: var(--ion-color-light);
+    border-radius: 16px;
+    padding: 24px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    &.empty {
+      border: 2px dashed var(--ion-color-medium);
+      
+      &:hover {
+        border-color: var(--ion-color-primary);
+        background: var(--ion-color-primary-tint);
+      }
+    }
+
+    .enemy-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .enemy-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--ion-color-dark);
+      margin-bottom: 4px;
+    }
+
+    .enemy-subtitle {
+      font-size: 12px;
+      color: var(--ion-color-medium);
+    }
+  }
+}
+
+.progress-container {
+  .stats-header {
+    text-align: center;
+    margin-bottom: 24px;
+
+    h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--ion-color-dark);
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--ion-color-medium);
+    }
+  }
+}
+
+.enemies-progress-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .enemy-progress-card {
+    margin: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    ion-card-content {
+      padding: 16px;
+    }
+
+    .enemy-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+
+      .enemy-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .enemy-icon-large {
+          font-size: 40px;
+        }
+
+        h3 {
+          font-size: 18px;
+          font-weight: 600;
+          margin: 0 0 4px 0;
+          color: var(--ion-color-dark);
+        }
+
+        .subtitle {
+          font-size: 12px;
+          color: var(--ion-color-medium);
+          margin: 0;
+        }
+      }
+
+      .enemy-stats {
+        text-align: right;
+
+        .stat {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+
+          .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--ion-color-primary);
+          }
+
+          .stat-label {
+            font-size: 11px;
+            color: var(--ion-color-medium);
+            text-transform: uppercase;
+          }
+        }
+      }
+    }
+
+    .progress-section {
+      margin-bottom: 12px;
+
+      .progress-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 13px;
+
+        .progress-percentage {
+          font-weight: 600;
+          color: var(--ion-color-primary);
+        }
+      }
+
+      .progress-bar {
+        height: 8px;
+        background: var(--ion-color-light);
+        border-radius: 4px;
+        overflow: hidden;
+
+        .progress-fill {
+          height: 100%;
+          border-radius: 4px;
+          transition: width 0.3s ease;
+
+          &.improving {
+            background: linear-gradient(90deg, var(--ion-color-success), var(--ion-color-success-tint));
+          }
+
+          &.stable {
+            background: linear-gradient(90deg, var(--ion-color-warning), var(--ion-color-warning-tint));
+          }
+
+          &.declining {
+            background: linear-gradient(90deg, var(--ion-color-danger), var(--ion-color-danger-tint));
+          }
+        }
+      }
+    }
+
+    .rating-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      background: var(--ion-color-light);
+      border-radius: 8px;
+      margin-bottom: 12px;
+
+      .rating-label {
+        font-size: 13px;
+        color: var(--ion-color-medium);
+      }
+
+      .rating-display {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .rating-value {
+          font-size: 20px;
+          font-weight: 700;
+          color: var(--ion-color-dark);
+        }
+
+        .rating-max {
+          font-size: 14px;
+          color: var(--ion-color-medium);
+        }
+
+        ion-badge {
+          font-size: 10px;
+          text-transform: capitalize;
+        }
+      }
+    }
+
+    .last-checkin {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--ion-color-medium);
+
+      ion-icon {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (min-width: 768px) {
+  .enemies-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

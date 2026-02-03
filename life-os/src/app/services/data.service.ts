@@ -201,4 +201,15 @@ export class DataService {
     
     return this.http.get(`${this.baseUrl}/analytics/comprehensive/${userId}`, { params });
   }
+
+  /**
+   * Get enemy analytics for karma page
+   * @param userId - User ID
+   * @param days - Number of days to analyze (default: 30)
+   */
+  getEnemyAnalytics(userId: string, days: number = 30): Observable<any> {
+    return this.http.get(`${this.baseUrl}/enemy-analytics/${userId}`, {
+      params: { days: days.toString() }
+    });
+  }
 }

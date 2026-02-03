@@ -1,13 +1,109 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>karma</ion-title>
+    <ion-title>Six Enemies Progress</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">karma</ion-title>
+      <ion-title size="large">Six Enemies Progress</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <!-- Pull to refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="karma-container">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Loading your progress...</p>
+    </div>
+
+    <!-- No Data State - Begin Journey -->
+    <div *ngIf="!loading && !hasData" class="empty-state">
+      <div class="rocket-icon">🚀</div>
+      <h2>Begin Your Journey</h2>
+      <p>Tap any enemy below to record your first check-in and start tracking your progress</p>
+      
+      <div class="enemies-grid">
+        <div *ngFor="let enemy of enemyProgress"
+             class="enemy-card empty"
+             (click)="navigateToEnemy(enemy.enemy)">
+          <div class="enemy-icon">{{ enemy.icon }}</div>
+          <div class="enemy-name">{{ enemy.displayName }}</div>
+          <div class="enemy-subtitle">{{ getEnemyConfig(enemy.enemy).subtitle }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Data State -->
+    <div *ngIf="!loading && hasData" class="progress-container">
+      <div class="stats-header">
+        <h3>Your Progress</h3>
+        <p>Track your journey in conquering the six enemies</p>
+      </div>
+
+      <div class="enemies-progress-list">
+        <ion-card *ngFor="let enemy of enemyProgress" 
+                  class="enemy-progress-card"
+                  (click)="navigateToEnemy(enemy.enemy)">
+          <ion-card-content>
+            <div class="enemy-header">
+              <div class="enemy-info">
+                <span class="enemy-icon-large">{{ enemy.icon }}</span>
+                <div>
+                  <h3>{{ enemy.displayName }}</h3>
+                  <p class="subtitle">{{ getEnemyConfig(enemy.enemy).subtitle }}</p>
+                </div>
+              </div>
+              <div class="enemy-stats">
+                <div class="stat">
+                  <span class="stat-value">{{ enemy.totalCheckins }}</span>
+                  <span class="stat-label">Check-ins</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-section">
+              <div class="progress-header">
+                <span>Progress</span>
+                <span class="progress-percentage">{{ getProgressPercentage(enemy) }}%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" 
+                     [style.width.%]="getProgressPercentage(enemy)"
+                     [class.improving]="enemy.trend === 'improving'"
+                     [class.stable]="enemy.trend === 'stable'"
+                     [class.declining]="enemy.trend === 'declining'">
+                </div>
+              </div>
+            </div>
+
+            <!-- Average Rating -->
+            <div class="rating-section">
+              <span class="rating-label">Average Intensity:</span>
+              <div class="rating-display">
+                <span class="rating-value">{{ enemy.averageRating.toFixed(1) }}</span>
+                <span class="rating-max">/10</span>
+                <ion-badge [color]="enemy.trend === 'improving' ? 'success' : enemy.trend === 'stable' ? 'warning' : 'danger'">
+                  {{ enemy.trend }}
+                </ion-badge>
+              </div>
+            </div>
+
+            <!-- Last Check-in -->
+            <div *ngIf="enemy.lastCheckin" class="last-checkin">
+              <ion-icon name="time-outline"></ion-icon>
+              <span>Last check-in: {{ enemy.lastCheckin | date:'short' }}</span>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+  </div>
 </ion-content>
