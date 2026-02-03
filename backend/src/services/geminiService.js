@@ -48,7 +48,11 @@ async function generateWeeklySummary(insightsData) {
     
     if (!process.env.GEMINI_API_KEY) {
       console.warn("GEMINI_API_KEY not set. Returning fallback summary.");
-      return generateFallbackSummary(insightsData);
+      return {
+        text: generateFallbackSummary(insightsData),
+        source: 'fallback',
+        error: null
+      };
     }
 
     const model = genAI.getGenerativeModel({
@@ -65,14 +69,42 @@ async function generateWeeklySummary(insightsData) {
 
     // Validate response length (max 4-5 lines)
     const lines = text.trim().split('\n').filter(line => line.trim());
-    if (lines.length > 5) {
-      return lines.slice(0, 5).join('\n');
-    }
+    const finalText = lines.length > 5 ? lines.slice(0, 5).join('\n') : text.trim();
 
-    return text.trim();
+    return {
+      text: finalText,
+      source: 'gemini',
+      error: null
+    };
   } catch (error) {
     console.error("Gemini API error:", error.message);
-    return generateFallbackSummary(insightsData);
+    
+    // Categorize error types
+    let errorType = 'unknown';
+    let errorMessage = error.message;
+    
+    if (error.message?.includes('API key')) {
+      errorType = 'api_key';
+      errorMessage = 'API key invalid or missing';
+    } else if (error.message?.includes('quota') || error.message?.includes('limit')) {
+      errorType = 'quota_exceeded';
+      errorMessage = 'API quota exceeded';
+    } else if (error.message?.includes('network') || error.message?.includes('ECONNREFUSED')) {
+      errorType = 'network';
+      errorMessage = 'Network connection failed';
+    } else if (error.message?.includes('timeout')) {
+      errorType = 'timeout';
+      errorMessage = 'Request timed out';
+    }
+    
+    return {
+      text: generateFallbackSummary(insightsData),
+      source: 'fallback',
+      error: {
+        type: errorType,
+        message: errorMessage
+      }
+    };
   }
 }
 
@@ -82,7 +114,11 @@ async function generateWeeklySummary(insightsData) {
 async function generateReflectionQuestions(insightsData) {
   try {
     if (!process.env.GEMINI_API_KEY) {
-      return generateFallbackQuestions(insightsData);
+      return {
+        questions: generateFallbackQuestions(insightsData),
+        source: 'fallback',
+        error: null
+      };
     }
 
     const model = genAI.getGenerativeModel({
@@ -107,10 +143,42 @@ async function generateReflectionQuestions(insightsData) {
       .slice(0, 3)
       .map(q => q.replace(/^\d+\.\s*/, '').trim());
 
-    return questions.length > 0 ? questions : generateFallbackQuestions(insightsData);
+    const finalQuestions = questions.length > 0 ? questions : generateFallbackQuestions(insightsData);
+    
+    return {
+      questions: finalQuestions,
+      source: questions.length > 0 ? 'gemini' : 'fallback',
+      error: null
+    };
   } catch (error) {
     console.error("Gemini API error:", error.message);
-    return generateFallbackQuestions(insightsData);
+    
+    // Categorize error types
+    let errorType = 'unknown';
+    let errorMessage = error.message;
+    
+    if (error.message?.includes('API key')) {
+      errorType = 'api_key';
+      errorMessage = 'API key invalid or missing';
+    } else if (error.message?.includes('quota') || error.message?.includes('limit')) {
+      errorType = 'quota_exceeded';
+      errorMessage = 'API quota exceeded';
+    } else if (error.message?.includes('network') || error.message?.includes('ECONNREFUSED')) {
+      errorType = 'network';
+      errorMessage = 'Network connection failed';
+    } else if (error.message?.includes('timeout')) {
+      errorType = 'timeout';
+      errorMessage = 'Request timed out';
+    }
+    
+    return {
+      questions: generateFallbackQuestions(insightsData),
+      source: 'fallback',
+      error: {
+        type: errorType,
+        message: errorMessage
+      }
+    };
   }
 }
 

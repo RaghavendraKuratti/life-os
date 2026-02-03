@@ -130,19 +130,34 @@ async function generateWeeklyInsights(userId) {
         let aiSummary = null;
         let reflectionQuestions = [];
         let aiGenerated = false;
+        let aiError = null;
         
         try {
             // Generate AI summary (with fallback)
-            aiSummary = await generateWeeklySummary(insightsData);
-            aiGenerated = true;
+            const summaryResult = await generateWeeklySummary(insightsData);
+            aiSummary = summaryResult.text;
+            aiGenerated = summaryResult.source === 'gemini';
+            if (summaryResult.error) {
+                aiError = summaryResult.error;
+            }
             
             // Generate reflection questions (with fallback)
-            reflectionQuestions = await generateReflectionQuestions(insightsData);
+            const questionsResult = await generateReflectionQuestions(insightsData);
+            reflectionQuestions = questionsResult.questions;
+            
+            // If questions also had an error, include it
+            if (questionsResult.error && !aiError) {
+                aiError = questionsResult.error;
+            }
         } catch (error) {
             console.error("Error generating AI insights:", error);
             // Use basic reflection as fallback
             aiSummary = basicReflection;
             aiGenerated = false;
+            aiError = {
+                type: 'service_error',
+                message: 'Failed to generate insights'
+            };
         }
 
         return {
@@ -150,7 +165,8 @@ async function generateWeeklyInsights(userId) {
             reflection: basicReflection,
             aiSummary,
             aiGenerated,
-            reflectionQuestions
+            reflectionQuestions,
+            aiError
         };
     } catch (error) {
         console.error("Error generating weekly insights:", error);

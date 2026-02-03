@@ -8,11 +8,26 @@
   </ion-card-header>
 
   <ion-card-content>
+    <!-- AI Warning Banner -->
+    <ion-item *ngIf="showAiWarning && insights.aiError" lines="none" class="ai-warning-banner">
+      <ion-icon name="information-circle" slot="start" color="warning"></ion-icon>
+      <ion-label class="ion-text-wrap">
+        <p>{{ getAiWarningMessage() }}. Showing basic summary.</p>
+      </ion-label>
+      <ion-button fill="clear" slot="end" (click)="dismissAiWarning()">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
+
     <!-- Reflection Message -->
     <div class="reflection-section">
       <ion-text color="medium">
-        <p class="reflection-text">{{ insights.reflection }}</p>
+        <p class="reflection-text">{{ insights.aiSummary || insights.reflection }}</p>
       </ion-text>
+      <ion-badge *ngIf="insights.aiGenerated" color="success" class="ai-badge">
+        <ion-icon name="sparkles" size="small"></ion-icon>
+        AI Generated
+      </ion-badge>
     </div>
 
     <!-- Key Metrics -->
@@ -119,7 +134,7 @@
 </ion-card>
 
 <!-- No Data State -->
-<ion-card *ngIf="!insights && !loading" class="weekly-insights-card no-data">
+<ion-card *ngIf="!insights && !loading && !errorMessage" class="weekly-insights-card no-data">
   <ion-card-header>
     <ion-card-subtitle>
       <ion-icon name="analytics"></ion-icon>
@@ -140,6 +155,29 @@
           <app-meditation-icon [icon]="'MEDITATION'" [active]="false"></app-meditation-icon>
         </span>
         START MEDITATION
+      </ion-button>
+    </div>
+  </ion-card-content>
+</ion-card>
+
+<!-- Error State -->
+<ion-card *ngIf="errorMessage && !loading" class="weekly-insights-card error-state">
+  <ion-card-header>
+    <ion-card-subtitle>
+      <ion-icon name="alert-circle"></ion-icon>
+      WEEKLY INSIGHTS
+    </ion-card-subtitle>
+    <ion-card-title>Unable to Load</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <div class="error-content">
+      <div class="error-icon">
+        <ion-icon name="cloud-offline-outline" color="danger"></ion-icon>
+      </div>
+      <p class="error-message">{{ errorMessage }}</p>
+      <ion-button expand="block" fill="outline" (click)="onMeditationClick()">
+        <ion-icon name="refresh" slot="start"></ion-icon>
+        Try Again
       </ion-button>
     </div>
   </ion-card-content>

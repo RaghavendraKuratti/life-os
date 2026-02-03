@@ -64,12 +64,13 @@ export class ProgressCircleComponent  implements OnInit, OnChanges {
     }
 
     // progressReq: 1 = last 7 days (weekly average)
-    // This fetches the average intensity rating (0-3 scale) over the past week
     this.dataService.progress(this.user.uid, this.enemy.key, 1)
     .subscribe({
       next: (res: any) => {
-        // res.data.average is the average rating from check-ins over the last 7 days
-        // Scale: 0 = "Not at all", 1 = "A little", 2 = "A lot", 3 = max
+        console.log("Progress", res);
+        
+        // res.data.average is the average intensity (1-5 scale) from check-ins
+        // Scale: 1 = Very Mild, 2 = Mild, 3 = Moderate, 4 = Strong, 5 = Overwhelming
         this.enemy.progress = res.data.average || 0;
       },
       error: (error) => {
@@ -101,7 +102,9 @@ export class ProgressCircleComponent  implements OnInit, OnChanges {
   }
 
   shouldShowPercentage(): boolean {
-    const percentage = ((this.enemy.progress / 3) * 100);
+    // Intensity scale is 1-5, so divide by 5 for percentage
+    // This represents how much the enemy affected you (higher = worse)
+    const percentage = ((this.enemy.progress / 5) * 100);
     
     // Don't show if NaN or invalid
     if (isNaN(percentage) || !isFinite(percentage)) {
@@ -118,14 +121,19 @@ export class ProgressCircleComponent  implements OnInit, OnChanges {
   }
 
   getProgressDisplay(): string {
-    const percentage = ((this.enemy.progress / 3) * 100);
+    // Intensity scale is 1-5, so divide by 5 for percentage
+    // Higher percentage = enemy had more impact (worse)
+    const percentage = ((this.enemy.progress / 5) * 100);
     
     // Handle NaN case
     if (isNaN(percentage) || !isFinite(percentage)) {
       return '0%';
     }
     
-    return `${percentage.toFixed(0)}%`;
+    // Cap at 100% to handle any edge cases
+    const cappedPercentage = Math.min(percentage, 100);
+    
+    return `${cappedPercentage.toFixed(0)}%`;
   }
 
   getFirstLine(): string {

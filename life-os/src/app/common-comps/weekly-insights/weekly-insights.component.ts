@@ -19,6 +19,12 @@ export interface WeeklyInsights {
   enemyReduction: number;
   reflection: string;
   enemyBreakdown: { [key: string]: number };
+  aiSummary?: string;
+  aiGenerated?: boolean;
+  aiError?: {
+    type: string;
+    message: string;
+  };
 }
 
 @Component({
@@ -31,9 +37,11 @@ export interface WeeklyInsights {
 export class WeeklyInsightsComponent implements OnInit {
   @Input() insights: WeeklyInsights | null = null;
   @Input() loading: boolean = false;
+  @Input() errorMessage: string | null = null;
   @Output() meditationClick = new EventEmitter<void>();
   
   IconType = IconType;
+  showAiWarning: boolean = false;
 
   enemyNames: { [key: string]: string } = {
     'KAMA': 'Desire',
@@ -55,7 +63,12 @@ export class WeeklyInsightsComponent implements OnInit {
 
   constructor(private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    // Check if AI insights had an error
+    if (this.insights?.aiError) {
+      this.showAiWarning = true;
+    }
+  }
 
   onMeditationClick() {
     this.router.navigate(['/meditation']);
@@ -86,5 +99,24 @@ export class WeeklyInsightsComponent implements OnInit {
     if (this.insights.enemyReduction >= 30) return 'success';
     if (this.insights.enemyReduction >= 15) return 'warning';
     return 'medium';
+  }
+
+  getAiWarningMessage(): string {
+    if (!this.insights?.aiError) return '';
+    
+    const messages: { [key: string]: string } = {
+      'api_key': 'AI insights temporarily unavailable',
+      'quota_exceeded': 'AI service limit reached',
+      'network': 'Connection issue with AI service',
+      'timeout': 'AI service taking too long',
+      'service_error': 'Unable to generate AI insights',
+      'unknown': 'AI insights unavailable'
+    };
+    
+    return messages[this.insights.aiError.type] || messages['unknown'];
+  }
+
+  dismissAiWarning() {
+    this.showAiWarning = false;
   }
 }

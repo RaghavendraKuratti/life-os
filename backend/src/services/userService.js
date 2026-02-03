@@ -72,11 +72,10 @@ async function createUserInfo(body) {
 
 async function progress(userId, key, startDate, endDate) {
     // Query from new global enemyCheckins collection
+    // Using only userid to avoid composite index requirement
+    // Then filter by enemy and timestamp in memory
     const ref = db.collection("enemyCheckins")
-        .where("userid", "==", userId)
-        .where("enemy", "==", key)
-        .where("timestamp", ">=", startDate)
-        .where("timestamp", "<=", endDate);
+        .where("userid", "==", userId);
 
     const snapShot = await ref.get();
 
@@ -87,22 +86,31 @@ async function progress(userId, key, startDate, endDate) {
     const results = [];
     snapShot.forEach(doc => {
         const data = doc.data();
-        results.push({
-            date: data.timestamp,
-            rating: data.selfRating || 0,
-            intensity: data.intensity || 0,
-            ...data
-        });
+        // Extract date from full ISO timestamp for comparison
+        const checkInDate = data.timestamp ? data.timestamp.split('T')[0] : null;
+        
+        // Filter by enemy and date range in memory
+        if (data.enemy === key &&
+            checkInDate &&
+            checkInDate >= startDate &&
+            checkInDate <= endDate) {
+            results.push({
+                date: data.timestamp,
+                rating: data.intensity || 0,  // Use intensity for rating
+                intensity: data.intensity || 0,
+                ...data
+            });
+        }
     });
     return results;
 }
 
 async function dailyProgress(userId, key, date) {
     // Query from new global enemyCheckins collection for today
+    // Since timestamp is stored as full ISO string, we need to filter by date prefix
     const ref = db.collection("enemyCheckins")
         .where("userid", "==", userId)
-        .where("enemy", "==", key)
-        .where("timestamp", "==", date);
+        .where("enemy", "==", key);
     
     const snap = await ref.get();
     
@@ -115,9 +123,12 @@ async function dailyProgress(userId, key, date) {
     
     snap.forEach(doc => {
         const data = doc.data();
-        // Use selfRating (0-2 scale) for progress calculation
-        total += data.selfRating || 0;
-        count++;
+        // Filter by date in memory since timestamp is full ISO string
+        if (data.timestamp && data.timestamp.startsWith(date)) {
+            // Use intensity (1-5 scale) for progress calculation
+            total += data.intensity || 0;
+            count++;
+        }
     });
     
     const average = count > 0 ? total / count : 0;

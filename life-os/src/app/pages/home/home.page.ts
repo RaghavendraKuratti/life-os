@@ -31,6 +31,7 @@ export class HomePage implements OnInit {
   weekly: Weekly | null = null;
   weeklyInsights: WeeklyInsights | null = null;
   insightsLoading: boolean = false;
+  insightsError: string | null = null;
   enemyOfDay: EnemyOfDay | null = null;
   enemyOfDayLoading: boolean = false;
 
@@ -162,10 +163,35 @@ IconType = IconType;
           return data;
         });
         
-        // Note: Individual progress is fetched by progress-circle component
-        // This ensures each enemy shows real user data from the last 7 days
+        // Fetch progress for all enemies to determine if user has any data
+        this.checkUserProgress();
       }
     })
+  }
+
+  checkUserProgress() {
+    if (!this.user?.uid || this.sixEnemies.length === 0) {
+      return;
+    }
+
+    // Fetch progress for each enemy
+    const progressChecks = this.sixEnemies.map(enemy =>
+      this.fs.progress(this.user!.uid, enemy.key, 1)
+    );
+
+    // Wait for all progress checks to complete
+    Promise.all(progressChecks.map(obs =>
+      obs.toPromise().catch(() => ({ data: { average: 0, count: 0 } }))
+    )).then(results => {
+      // Update enemy progress values
+      results.forEach((res: any, index) => {
+        if (res && res.data) {
+          this.sixEnemies[index].progress = res.data.average || 0;
+          // Store count to check if user has any check-ins
+          this.sixEnemies[index].checkInCount = res.data.count || 0;
+        }
+      });
+    });
   }
 
   loadWeeklyInsights() {
@@ -175,16 +201,26 @@ IconType = IconType;
     }
     
     this.insightsLoading = true;
+    this.insightsError = null;
+    
     this.fs.getWeeklyInsights(this.user.uid).subscribe({
       next: (response: any) => {
         console.log('Weekly insights for user:', this.user?.uid, response);
         if (response.success && response.data) {
           this.weeklyInsights = response.data;
+          // Show user message if AI had issues but still got fallback
+          if (response.userMessage) {
+            console.info('AI Insights:', response.userMessage);
+          }
+        } else if (response.message) {
+          // No data case
+          this.weeklyInsights = null;
         }
         this.insightsLoading = false;
       },
       error: (error) => {
         console.error('Error loading weekly insights:', error);
+        this.insightsError = error.error?.userMessage || 'Unable to load insights. Please try again later.';
         this.insightsLoading = false;
       }
     });
@@ -263,7 +299,21 @@ IconType = IconType;
   }
 
   hasAnyProgress(): boolean {
-    // Check if any enemy has progress > 0
-    return this.sixEnemies.some(enemy => enemy.progress && enemy.progress > 0);
+    // Check if any enemy has check-ins (count > 0)
+    // This is more reliable than checking progress value
+    // because progress could be 0 even with check-ins if user selected "Not at all"
+    return this.sixEnemies.some(enemy =>
+      (enemy.checkInCount && enemy.checkInCount > 0) ||
+      (enemy.progress && enemy.progress > 0)
+    );
+  }
+
+  ionViewWillEnter() {
+    // Refresh data when page becomes visible (e.g., after returning from enemy details)
+    console.log('Home page entering, refreshing data...');
+    if (this.user) {
+      this.fetchEnemyDetails();
+      this.loadWeeklyInsights();
+    }
   }
 }

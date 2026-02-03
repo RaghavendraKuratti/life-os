@@ -105,24 +105,20 @@ intensityLabels = ['', 'Very Mild', 'Mild', 'Moderate', 'Strong', 'Overwhelming'
     })
    }
    saveCheckIn(finish: boolean = false) {
-      // Map intensity (1-5) to old enemyLevel (0-2) for backward compatibility
-      // 1-2 = 0 (Not at all), 3 = 1 (A little), 4-5 = 2 (A lot)
-      const enemyLevel = this.intensity <= 2 ? 0 : this.intensity === 3 ? 1 : 2;
-
-      // Prepare enhanced check-in data
+      // Prepare check-in data with intensity (1-5 scale)
       const enhancedData = {
         intensity: this.intensity,
         triggers: this.selectedTriggers,
         notes: this.dailyJournal
       };
 
-      console.log('Saving enhanced check-in:', {
+      console.log('Saving check-in:', {
         enemy: this.enemy.key,
-        rating: enemyLevel,
         ...enhancedData
       });
 
-      this.fs.saveCheckins(this.user.uid, this.enemy.key, enemyLevel, enhancedData)
+      // Send intensity directly, no rating conversion needed
+      this.fs.saveCheckins(this.user.uid, this.enemy.key, this.intensity, enhancedData)
       .subscribe({
         next: (res: any) => {
           const remainingEnemy: string[] = res.remaining;

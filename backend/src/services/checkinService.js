@@ -28,7 +28,6 @@ async function saveCheckin(userid, enemy, checkinData) {
         
         // Extract data with defaults
         const {
-            selfRating = 0,
             intensity = null,
             triggers = [],
             notes = '',
@@ -39,7 +38,6 @@ async function saveCheckin(userid, enemy, checkinData) {
         const checkinDoc = {
             enemy,
             userid,
-            selfRating,
             intensity,
             triggers,
             notes,

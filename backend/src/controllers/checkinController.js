@@ -20,7 +20,7 @@ async function saveCheckIn(req, res) {
         const { userId } = req.params;
         const {
             enemy,
-            rating,
+            rating,  // Keep for backward compatibility but don't use
             intensity,
             triggers,
             resisted,
@@ -29,7 +29,6 @@ async function saveCheckIn(req, res) {
         } = req.body;
         
         console.log("saveCheckIn", userId, enemy, {
-            rating,
             intensity,
             triggers,
             resisted,
@@ -37,9 +36,8 @@ async function saveCheckIn(req, res) {
             notes: notes ? 'provided' : 'none'
         });
         
-        // Prepare checkin data
+        // Prepare checkin data - only use intensity
         const checkinData = {
-            selfRating: rating,
             intensity,
             triggers,
             resisted,
@@ -48,7 +46,7 @@ async function saveCheckIn(req, res) {
         };
         
         const remaining = await saveCheckin(userId, enemy, checkinData);
-        await saveUserAverages(userId, rating, enemy);
+        await saveUserAverages(userId, intensity, enemy);
         
         res.json({
             success: true,
