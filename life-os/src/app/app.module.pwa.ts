@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { RouteReuseStrategy, RouterModule } from '@angular/router';
 
 import { IonicRouteStrategy, IonicModule } from '@ionic/angular';
@@ -15,22 +15,25 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
 import { TabsPageModule } from './tabs/tabs.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
-
-
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 
 
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule,
+  imports: [BrowserModule, 
     IonicModule.forRoot(),
     AppRoutingModule,
     TabsPageModule,
     HttpClientModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
     // AngularFireStorageModule
-    // ServiceWorker will be enabled after running: npm install
-    // Then uncomment the lines in app.module.pwa.ts and replace this file
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideFirebaseApp(() => initializeApp(environment.firebase)),
@@ -41,4 +44,3 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
   bootstrap: [AppComponent],
 })
 export class AppModule {}
-
