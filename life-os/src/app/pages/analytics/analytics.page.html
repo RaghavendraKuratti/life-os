@@ -1,0 +1,216 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Analytics</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="refreshAnalytics()">
+        <ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refreshAnalytics($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  @if (loading) {
+    <div class="loading-container">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <p>Loading analytics...</p>
+    </div>
+  } @else {
+    
+    <!-- Enemy Filter -->
+    <div class="filter-section">
+      <ion-item lines="none" class="filter-item">
+        <ion-label position="stacked">Filter by Enemy</ion-label>
+        <ion-select
+          [value]="selectedEnemy"
+          (ionChange)="onEnemyFilterChange($event)"
+          interface="action-sheet"
+          placeholder="All Enemies">
+          <ion-select-option [value]="null">All Enemies</ion-select-option>
+          <ion-select-option value="KRODHA">KRODHA (Anger)</ion-select-option>
+          <ion-select-option value="KAMA">KAMA (Desire)</ion-select-option>
+          <ion-select-option value="LOBHA">LOBHA (Greed)</ion-select-option>
+          <ion-select-option value="MOHA">MOHA (Delusion)</ion-select-option>
+          <ion-select-option value="MADA">MADA (Pride)</ion-select-option>
+          <ion-select-option value="MATSARYA">MATSARYA (Envy)</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </div>
+
+    <!-- Summary Cards -->
+    @if (summary) {
+      <div class="summary-section">
+        <h2 class="section-title">Summary (Last {{ summary.period }})</h2>
+        <div class="summary-grid">
+          
+          <!-- Average Intensity Card -->
+          <ion-card class="summary-card">
+            <ion-card-content>
+              <div class="card-icon">
+                <ion-icon name="speedometer-outline" [color]="getIntensityColor(summary.avgIntensity)"></ion-icon>
+              </div>
+              <div class="card-value">
+                {{ summary.avgIntensity || 0 }}
+              </div>
+              <div class="card-label">Avg Intensity</div>
+            </ion-card-content>
+          </ion-card>
+
+          <!-- Top Trigger Card -->
+          <ion-card class="summary-card">
+            <ion-card-content>
+              <div class="card-icon">
+                <ion-icon name="flash-outline" color="warning"></ion-icon>
+              </div>
+              <div class="card-value-text">
+                {{ summary.topTrigger || 'None' }}
+              </div>
+              <div class="card-label">Top Trigger</div>
+              @if (summary.topTriggerCount) {
+                <div class="card-sublabel">{{ summary.topTriggerCount }} times</div>
+              }
+            </ion-card-content>
+          </ion-card>
+
+          <!-- Current Streak Card -->
+          <ion-card class="summary-card">
+            <ion-card-content>
+              <div class="card-icon">
+                <ion-icon name="flame-outline" color="danger"></ion-icon>
+              </div>
+              <div class="card-value">
+                {{ summary.currentStreak || 0 }}
+              </div>
+              <div class="card-label">Day Streak</div>
+            </ion-card-content>
+          </ion-card>
+
+          <!-- Total Check-ins Card -->
+          <ion-card class="summary-card">
+            <ion-card-content>
+              <div class="card-icon">
+                <ion-icon name="checkmark-circle-outline" color="success"></ion-icon>
+              </div>
+              <div class="card-value">
+                {{ summary.totalCheckins || 0 }}
+              </div>
+              <div class="card-label">Check-ins</div>
+            </ion-card-content>
+          </ion-card>
+
+        </div>
+      </div>
+    }
+
+    <!-- Intensity Trend -->
+    @if (intensityTrend && intensityTrend.length > 0) {
+      <div class="chart-section">
+        <div class="section-header">
+          <h2 class="section-title">Intensity Trend</h2>
+          <ion-segment [(ngModel)]="selectedTrendDays" (ionChange)="onTrendDaysChange(selectedTrendDays)" mode="ios" class="period-selector">
+            <ion-segment-button [value]="7">
+              <ion-label>7D</ion-label>
+            </ion-segment-button>
+            <ion-segment-button [value]="14">
+              <ion-label>14D</ion-label>
+            </ion-segment-button>
+            <ion-segment-button [value]="30">
+              <ion-label>30D</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </div>
+        
+        <ion-card>
+          <ion-card-content>
+            <div class="simple-chart">
+              @for (item of intensityTrend; track item.date) {
+                <div class="chart-bar-container">
+                  <div class="chart-bar" 
+                       [style.height.%]="(item.intensity / 5) * 100"
+                       [attr.data-color]="getIntensityColor(item.intensity)">
+                  </div>
+                  <div class="chart-label">{{ item.date.split('-')[2] }}</div>
+                  <div class="chart-value">{{ item.intensity }}</div>
+                </div>
+              }
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    }
+
+    <!-- Top Triggers -->
+    @if (triggers && triggers.length > 0) {
+      <div class="chart-section">
+        <div class="section-header">
+          <h2 class="section-title">Top Triggers</h2>
+          <ion-segment [(ngModel)]="selectedTriggerDays" (ionChange)="onTriggerDaysChange(selectedTriggerDays)" mode="ios" class="period-selector">
+            <ion-segment-button [value]="7">
+              <ion-label>7D</ion-label>
+            </ion-segment-button>
+            <ion-segment-button [value]="30">
+              <ion-label>30D</ion-label>
+            </ion-segment-button>
+            <ion-segment-button [value]="90">
+              <ion-label>90D</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </div>
+
+        <ion-card>
+          <ion-card-content>
+            <div class="trigger-list">
+              @for (trigger of triggers.slice(0, 5); track trigger.name) {
+                <div class="trigger-item">
+                  <div class="trigger-name">{{ trigger.name }}</div>
+                  <div class="trigger-bar-container">
+                    <div class="trigger-bar" [style.width.%]="trigger.percentage"></div>
+                  </div>
+                  <div class="trigger-stats">
+                    <span class="trigger-count">{{ trigger.count }}</span>
+                    <span class="trigger-percentage">{{ formatPercentage(trigger.percentage) }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    }
+
+    <!-- Time Patterns -->
+    @if (timePatterns && timePatterns.patterns) {
+      <div class="chart-section">
+        <h2 class="section-title">Time of Day Patterns</h2>
+        <ion-card>
+          <ion-card-content>
+            <div class="time-pattern-grid">
+              @for (pattern of timePatterns.patterns; track pattern.time) {
+                <div class="time-pattern-item">
+                  <ion-icon [name]="getTimeIcon(pattern.time)" size="large" color="primary"></ion-icon>
+                  <div class="time-label">{{ pattern.time | titlecase }}</div>
+                  <div class="time-count">{{ pattern.count }}</div>
+                  <div class="time-percentage">{{ formatPercentage(pattern.percentage) }}</div>
+                </div>
+              }
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    }
+
+    <!-- Empty State -->
+    @if (!summary || summary.totalCheckins === 0) {
+      <div class="empty-state">
+        <ion-icon name="analytics-outline" size="large" color="medium"></ion-icon>
+        <h3>No Data Yet</h3>
+        <p>Start tracking your behavior to see analytics here.</p>
+      </div>
+    }
+
+  }
+</ion-content>

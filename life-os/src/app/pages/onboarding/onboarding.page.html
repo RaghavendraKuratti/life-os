@@ -1,0 +1,169 @@
+<ion-content [fullscreen]="true" class="onboarding-content">
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="getProgressPercentage()"></div>
+    </div>
+    <p class="progress-text">Step {{currentStep}} of {{totalSteps}}</p>
+  </div>
+
+  <!-- Step 1: Welcome -->
+  <div class="step-container" *ngIf="currentStep === 1">
+    <div class="step-content">
+      <div class="welcome-icon">🪷</div>
+      <h1>Welcome to Digital Flute</h1>
+      <p class="subtitle">A journey toward inner clarity</p>
+      
+      <div class="info-cards">
+        <div class="info-card">
+          <span class="card-icon">🎯</span>
+          <h3>Track Patterns</h3>
+          <p>Observe your inner obstacles without judgment</p>
+        </div>
+        <div class="info-card">
+          <span class="card-icon">🧘</span>
+          <h3>Build Practice</h3>
+          <p>Meditate daily to strengthen awareness</p>
+        </div>
+        <div class="info-card">
+          <span class="card-icon">📊</span>
+          <h3>See Progress</h3>
+          <p>Data-driven insights into your growth</p>
+        </div>
+      </div>
+
+      <div class="button-group">
+        <ion-button expand="block" (click)="nextStep()" class="primary-button">
+          Get Started
+        </ion-button>
+        <ion-button expand="block" fill="clear" (click)="skip()" class="skip-button">
+          Skip Setup
+        </ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: Intent Selection -->
+  <div class="step-container" *ngIf="currentStep === 2">
+    <div class="step-content">
+      <h1>What brings you here?</h1>
+      <p class="subtitle">Choose your primary intention</p>
+
+      <div class="options-grid">
+        <div 
+          class="option-card" 
+          *ngFor="let intent of intents"
+          [class.selected]="onboardingData.intent === intent.value"
+          (click)="selectIntent(intent.value)">
+          <span class="option-icon">{{intent.icon}}</span>
+          <h3>{{intent.label}}</h3>
+          <p>{{intent.description}}</p>
+        </div>
+      </div>
+
+      <div class="button-group">
+        <ion-button expand="block" (click)="nextStep()" [disabled]="!canProceed()" class="primary-button">
+          Continue
+        </ion-button>
+        <ion-button expand="block" fill="clear" (click)="previousStep()" class="back-button">
+          Back
+        </ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: Primary Enemy Selection -->
+  <div class="step-container" *ngIf="currentStep === 3">
+    <div class="step-content">
+      <h1>Your primary challenge</h1>
+      <p class="subtitle">Which inner obstacle affects you most?</p>
+
+      <div class="options-list">
+        <div
+          class="option-item"
+          *ngFor="let enemy of enemies"
+          [class.selected]="isEnemySelected(enemy.value)"
+          (click)="selectEnemy(enemy.value)">
+          <span class="option-icon">{{enemy.icon}}</span>
+          <div class="option-info">
+            <h3>{{enemy.label}}</h3>
+            <p>{{enemy.description}}</p>
+          </div>
+          <ion-icon
+            name="checkmark-circle"
+            *ngIf="isEnemySelected(enemy.value)"
+            class="check-icon">
+          </ion-icon>
+        </div>
+      </div>
+      
+      <div class="selection-info" *ngIf="onboardingData.primaryEnemies.length > 0">
+        <p>{{onboardingData.primaryEnemies.length}} challenge(s) selected</p>
+      </div>
+
+      <div class="button-group">
+        <ion-button expand="block" (click)="nextStep()" [disabled]="!canProceed()" class="primary-button">
+          Continue
+        </ion-button>
+        <ion-button expand="block" fill="clear" (click)="previousStep()" class="back-button">
+          Back
+        </ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4: Reminder Setup -->
+  <div class="step-container" *ngIf="currentStep === 4">
+    <div class="step-content">
+      <h1>Daily reminder</h1>
+      <p class="subtitle">Set a time for your daily check-in</p>
+
+      <div class="reminder-setup">
+        <ion-item lines="none" class="toggle-item">
+          <ion-label>
+            <h2>Enable Daily Reminders</h2>
+            <p>Get notified to check in and meditate</p>
+          </ion-label>
+          <ion-toggle [(ngModel)]="onboardingData.enableReminders"></ion-toggle>
+        </ion-item>
+
+        <div class="time-picker" *ngIf="onboardingData.enableReminders">
+          <ion-item lines="none">
+            <ion-label position="stacked">Reminder Time</ion-label>
+            <ion-datetime-button datetime="reminder-time"></ion-datetime-button>
+          </ion-item>
+
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime
+                id="reminder-time"
+                presentation="time"
+                [(ngModel)]="onboardingData.reminderTime"
+                [preferWheel]="true">
+              </ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </div>
+
+        <div class="reminder-info">
+          <ion-icon name="information-circle-outline"></ion-icon>
+          <p>You can change this anytime in settings</p>
+        </div>
+      </div>
+
+      <div class="button-group">
+        <ion-button 
+          expand="block" 
+          (click)="completeOnboarding()" 
+          [disabled]="loading"
+          class="primary-button">
+          <ion-spinner name="crescent" *ngIf="loading"></ion-spinner>
+          <span *ngIf="!loading">Complete Setup</span>
+        </ion-button>
+        <ion-button expand="block" fill="clear" (click)="previousStep()" class="back-button">
+          Back
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>

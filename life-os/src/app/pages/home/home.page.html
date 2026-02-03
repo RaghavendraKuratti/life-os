@@ -1,0 +1,114 @@
+<ion-header class="ion-no-border" translucent="true">
+  <ion-toolbar class="header-toolbar">
+    <div class="header-content">
+      <div class="user-section">
+        <ion-avatar class="user-avatar">
+          <app-meditation-icon [icon]="IconType.LOTUS"></app-meditation-icon>
+        </ion-avatar>
+        
+        <div class="user-info">
+          <h1 class="greeting">Welcome</h1>
+          <p class="user-email">{{user?.email}}</p>
+        </div>
+      </div>
+      @if (streak?.checkinDays) {
+        <div class="streak-badge">
+          <ion-icon name="flame"></ion-icon>
+          <span>{{streak.checkinDays}} days</span>
+        </div>
+      }
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="home-content">
+  <!-- Refresher -->
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <!-- Daily Shloka Card -->
+  <div class="content-section shloka-wrapper">
+    <app-shloka-card
+      [verse]="varse"
+      [isRead]="isShlokaRead"
+      (markAsRead)="onMarkShlokaAsRead()">
+    </app-shloka-card>
+  </div>
+
+  <!-- Enemy of Day Card -->
+  <div class="content-section">
+    <div class="enemy-of-day-card" (click)="onEnemyOfDayClick()">
+      @if (enemyOfDay && !enemyOfDayLoading) {
+        <div class="enemy-icon-wrapper">
+          <ion-icon name="shield-outline"></ion-icon>
+        </div>
+        <div class="enemy-content">
+          <h2 class="enemy-name">{{enemyOfDay.enemy}}</h2>
+          <p class="enemy-label">Enemy of Day</p>
+        </div>
+      } @else {
+        <ion-skeleton-text animated style="width: 100%; height: 80px;"></ion-skeleton-text>
+      }
+    </div>
+  </div>
+
+  <!-- Weekly Insights Section -->
+  <div class="content-section insights-section">
+    <app-weekly-insights
+      [insights]="weeklyInsights"
+      [loading]="insightsLoading">
+    </app-weekly-insights>
+  </div>
+
+  <!-- Six Enemies Section -->
+  <div class="content-section enemies-section">
+    <div class="section-header">
+      <ion-icon name="fitness-outline"></ion-icon>
+      <h3>Six Enemies Progress</h3>
+    </div>
+    
+    @if (sixEnemies.length > 0) {
+      @if (hasAnyProgress()) {
+        <div class="section-description">
+          <p>Your weekly progress with the six inner enemies. The percentage shows your average intensity over the last 7 days. Tap each enemy to record today's check-in and view detailed insights.</p>
+        </div>
+        <div class="enemies-grid">
+          @for (enemy of sixEnemies; track $index) {
+            <div class="enemy-item" (click)="moveToDetails(enemy)">
+              <app-progress-circle [size]="70" [stroke]="stroke" [enemy]="enemy"></app-progress-circle>
+            </div>
+          }
+        </div>
+      } @else {
+        <!-- Empty State for New Users -->
+        <div class="empty-state">
+          <div class="empty-state-icon">
+            <ion-icon name="rocket-outline" color="primary"></ion-icon>
+          </div>
+          <h2>Begin Your Journey</h2>
+          <p class="empty-state-message">
+            Tap any enemy below to record your first check-in and start tracking your progress
+          </p>
+          
+          <div class="enemies-grid">
+            @for (enemy of sixEnemies; track $index) {
+              <div class="enemy-item" (click)="moveToDetails(enemy)">
+                <app-progress-circle [size]="70" [stroke]="stroke" [enemy]="enemy"></app-progress-circle>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    } @else {
+      <div class="loading-state">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Loading progress...</p>
+      </div>
+    }
+  </div>
+
+
+  <!-- Bottom Spacing -->
+  <div class="bottom-spacing"></div>
+</ion-content>

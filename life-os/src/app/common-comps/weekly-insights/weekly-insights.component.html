@@ -1,0 +1,146 @@
+<ion-card *ngIf="insights && !loading" class="weekly-insights-card">
+  <ion-card-header>
+    <ion-card-subtitle>
+      <ion-icon name="analytics"></ion-icon>
+      WEEKLY INSIGHTS
+    </ion-card-subtitle>
+    <ion-card-title>{{ formatDate(insights.weekStart) }} - {{ formatDate(insights.weekEnd) }}</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <!-- Reflection Message -->
+    <div class="reflection-section">
+      <ion-text color="medium">
+        <p class="reflection-text">{{ insights.reflection }}</p>
+      </ion-text>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="metrics-grid">
+      <!-- Top Enemy -->
+      <div class="metric-card" *ngIf="insights.topEnemy">
+        <ion-icon name="warning" class="metric-icon-ionic" color="warning"></ion-icon>
+        <div class="metric-content">
+          <div class="metric-label">Top Challenge</div>
+          <div class="metric-value">{{ getEnemyName(insights.topEnemy) }}</div>
+          <div class="metric-detail">{{ insights.topEnemyCount }} times</div>
+        </div>
+      </div>
+
+      <!-- Meditation Consistency -->
+      <div class="metric-card">
+        <ion-icon name="fitness" class="metric-icon-ionic" [color]="getConsistencyColor()"></ion-icon>
+        <div class="metric-content">
+          <div class="metric-label">Meditation</div>
+          <div class="metric-value">
+            <ion-text [color]="getConsistencyColor()">
+              {{ insights.meditationConsistency }}%
+            </ion-text>
+          </div>
+          <div class="metric-detail">{{ insights.meditationDays }}/7 days</div>
+        </div>
+      </div>
+
+      <!-- Enemy Reduction -->
+      <div class="metric-card" *ngIf="insights.enemyReduction > 0">
+        <ion-icon name="trending-down" class="metric-icon-ionic" color="success"></ion-icon>
+        <div class="metric-content">
+          <div class="metric-label">Improvement</div>
+          <div class="metric-value">
+            <ion-text [color]="getReductionColor()">
+              -{{ insights.enemyReduction }}%
+            </ion-text>
+          </div>
+          <div class="metric-detail">on meditation days</div>
+        </div>
+      </div>
+
+      <!-- Total Meditation Time -->
+      <div class="metric-card" *ngIf="insights.totalMeditationMinutes > 0">
+        <ion-icon name="time" class="metric-icon-ionic" color="primary"></ion-icon>
+        <div class="metric-content">
+          <div class="metric-label">Total Time</div>
+          <div class="metric-value">{{ insights.totalMeditationMinutes }} min</div>
+          <div class="metric-detail">this week</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Best & Worst Days -->
+    <div class="days-section" *ngIf="insights.bestDay && insights.worstDay">
+      <div class="day-card best-day">
+        <ion-icon name="sunny" color="success"></ion-icon>
+        <div class="day-content">
+          <div class="day-label">Best Day</div>
+          <div class="day-date">{{ formatDate(insights.bestDay.date) }}</div>
+        </div>
+      </div>
+      <div class="day-card worst-day">
+        <ion-icon name="cloudy" color="warning"></ion-icon>
+        <div class="day-content">
+          <div class="day-label">Challenging Day</div>
+          <div class="day-date">{{ formatDate(insights.worstDay.date) }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-section" *ngIf="insights.meditationConsistency > 0">
+      <div class="progress-label">
+        <span>Consistency Goal</span>
+        <span>{{ insights.meditationConsistency }}%</span>
+      </div>
+      <ion-progress-bar
+        [value]="insights.meditationConsistency / 100"
+        [color]="getConsistencyColor()">
+      </ion-progress-bar>
+    </div>
+
+    <!-- Action Button -->
+    <ion-button expand="block" (click)="onMeditationClick()" class="action-btn">
+      <span slot="start" class="meditation-icon-wrapper">
+        <app-meditation-icon [icon]="'MEDITATION'" [active]="false"></app-meditation-icon>
+      </span>
+      MEDITATION
+    </ion-button>
+  </ion-card-content>
+</ion-card>
+
+<!-- Loading State -->
+<ion-card *ngIf="loading" class="weekly-insights-card">
+  <ion-card-header>
+    <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-skeleton-text animated style="width: 100%; height: 60px"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 80%; height: 40px; margin-top: 16px"></ion-skeleton-text>
+  </ion-card-content>
+</ion-card>
+
+<!-- No Data State -->
+<ion-card *ngIf="!insights && !loading" class="weekly-insights-card no-data">
+  <ion-card-header>
+    <ion-card-subtitle>
+      <ion-icon name="analytics"></ion-icon>
+      WEEKLY INSIGHTS
+    </ion-card-subtitle>
+    <ion-card-title>Start Tracking</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <div class="no-data-content">
+      <div class="empty-icon">
+        <ion-icon name="bar-chart-outline" color="primary"></ion-icon>
+      </div>
+      <p class="empty-message">
+        Complete check-ins this week to see your patterns and progress
+      </p>
+      <ion-button expand="block" (click)="onMeditationClick()" class="action-btn">
+        <span slot="start" class="meditation-icon-wrapper">
+          <app-meditation-icon [icon]="'MEDITATION'" [active]="false"></app-meditation-icon>
+        </span>
+        START MEDITATION
+      </ion-button>
+    </div>
+  </ion-card-content>
+</ion-card>

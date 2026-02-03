@@ -1,0 +1,62 @@
+
+.shloka-card {
+    transition: opacity 0.3s ease;
+    
+    .shloka-header {
+        font-size: var(--title-font-size);
+        font-weight: 500;
+        text-align: center;
+        padding: 15px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        .read-icon {
+            font-size: 1.2em;
+            margin-left: 4px;
+        }
+    }
+
+    .shloka-content {
+        padding: 0px 5px 5px;
+    
+        .sanskrit-shloka {
+            font-style: italic;
+            font-size: var(--title-font-size);
+            font-weight: bold;
+            text-align: center;
+        }
+    
+        .eng-trs {
+            font-size: var(--title-font-size);
+            font-weight: var(--title-font-weight);
+            text-align: center;
+        }
+    }
+    
+    ion-footer {
+        text-align: center;
+        padding: 8px;
+        
+        ion-button {
+            font-size: var(--title-font-size);
+            font-weight: var(--title-font-weight);
+            transition: all 0.3s ease;
+        }
+    }
+
+    // Read state styling
+    &.read {
+        opacity: 0.85;
+        
+        .shloka-content {
+            opacity: 0.9;
+        }
+
+        ion-button {
+            --background: var(--ion-color-success);
+            --background-hover: var(--ion-color-success-shade);
+        }
+    }
+}

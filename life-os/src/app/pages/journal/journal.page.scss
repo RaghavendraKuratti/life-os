@@ -1,0 +1,279 @@
+.journal-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+// Step Sections
+.step-section {
+  margin-bottom: 30px;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
+  
+  .step-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #C8A870 0%, #D4B886 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.1em;
+    flex-shrink: 0;
+  }
+  
+  h3 {
+    margin: 0;
+    font-size: 1.1em;
+    color: var(--ion-color-dark);
+    font-weight: 600;
+  }
+}
+
+// Mood Selector
+.mood-selector {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.mood-button {
+  flex: 1;
+  max-width: 120px;
+  padding: 15px 10px;
+  border: 2px solid rgba(200, 168, 112, 0.2);
+  border-radius: 16px;
+  background: rgba(200, 168, 112, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:active {
+    transform: scale(0.95);
+  }
+  
+  &.selected {
+    border-color: #C8A870;
+    background: linear-gradient(135deg, rgba(200, 168, 112, 0.15) 0%, rgba(200, 168, 112, 0.08) 100%);
+    box-shadow: 0 4px 12px rgba(200, 168, 112, 0.2);
+  }
+  
+  .mood-emoji {
+    font-size: 2.5em;
+  }
+  
+  .mood-label {
+    font-size: 0.9em;
+    color: var(--ion-color-dark);
+    font-weight: 500;
+  }
+}
+
+// Enemy Icons (using ion-grid like common-journal)
+.avatar {
+  width: var(--icon-font-size, 40px);
+  height: var(--icon-font-size, 40px);
+  margin: 0.5rem;
+}
+
+.enemy-label {
+  font-size: 0.7em;
+  color: var(--ion-color-medium);
+  margin-top: 4px;
+  text-align: center;
+  line-height: 1.2;
+}
+
+// Prompts Section
+.prompts-section {
+  margin-bottom: 25px;
+  padding: 15px;
+  background: linear-gradient(135deg, rgba(200, 168, 112, 0.08) 0%, rgba(200, 168, 112, 0.03) 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(200, 168, 112, 0.2);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    max-height: 500px;
+    transform: translateY(0);
+  }
+}
+
+.prompts-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: #C8A870;
+  font-weight: 600;
+  font-size: 0.95em;
+  
+  ion-icon {
+    font-size: 1.3em;
+  }
+}
+
+.prompts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.prompt-chip {
+  padding: 12px 15px;
+  background: white;
+  border: 1px solid rgba(200, 168, 112, 0.3);
+  border-radius: 10px;
+  text-align: left;
+  font-size: 0.9em;
+  color: var(--ion-color-dark);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:active {
+    transform: scale(0.98);
+    background: rgba(200, 168, 112, 0.1);
+  }
+  
+  &:hover {
+    border-color: #C8A870;
+    background: rgba(200, 168, 112, 0.05);
+  }
+}
+
+// Journal Textarea
+.journal-textarea {
+  --background: white;
+  --border-color: rgba(200, 168, 112, 0.3);
+  --border-radius: 12px;
+  --padding-start: 15px;
+  --padding-end: 15px;
+  --padding-top: 15px;
+  --padding-bottom: 15px;
+  font-size: 1em;
+  line-height: 1.6;
+  min-height: 150px;
+  
+  &::part(native) {
+    border: 2px solid rgba(200, 168, 112, 0.2);
+    border-radius: 12px;
+    
+    &:focus {
+      border-color: #C8A870;
+      box-shadow: 0 0 0 3px rgba(200, 168, 112, 0.1);
+    }
+  }
+}
+
+.character-hint {
+  margin-top: 8px;
+  text-align: right;
+  
+  small {
+    font-size: 0.85em;
+  }
+}
+
+// Action Section
+.action-section {
+  margin-top: 30px;
+}
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.cancel-button {
+  --border-color: rgba(200, 168, 112, 0.4);
+  --color: #C8A870;
+  --border-radius: 16px;
+  height: 56px;
+  font-weight: 600;
+  
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.save-button {
+  --background: linear-gradient(135deg, #C8A870 0%, #D4B886 100%);
+  --border-radius: 16px;
+  height: 56px;
+  font-weight: 600;
+  
+  &::part(native) {
+    box-shadow: 0 4px 16px rgba(200, 168, 112, 0.3);
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
+  
+  &[disabled] {
+    opacity: 0.5;
+  }
+}
+
+// Responsive Design
+@media (min-width: 768px) {
+  .journal-container {
+    padding: 30px;
+  }
+  
+  .enemy-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  
+  .mood-selector {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+// Header Buttons
+ion-header {
+  ion-toolbar {
+    --background: linear-gradient(135deg, rgba(200, 168, 112, 0.05) 0%, rgba(200, 168, 112, 0.02) 100%);
+    
+    ion-button {
+      --color: #C8A870;
+      
+      &[disabled] {
+        --color: var(--ion-color-medium);
+        opacity: 0.5;
+      }
+    }
+  }
+}

@@ -1,0 +1,132 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+      <ion-icon slot="start" name="flower-outline" color="primary"></ion-icon>
+    <ion-title class="meditation-title">
+      Meditation
+    </ion-title>
+      <ion-icon slot="end" name="flower-outline" color="primary"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="meditation-home-bg" [fullscreen]="true">
+  
+  <!-- Compact Streak Summary -->
+  @if (medStreak) {
+    <div class="streak-summary">
+      <div class="streak-item">
+        <ion-icon name="flame" color="warning"></ion-icon>
+        <div class="streak-info">
+          <span class="streak-value">{{medStreak?.checkinDays || 0}}</span>
+          <span class="streak-label">Current</span>
+        </div>
+      </div>
+      <div class="streak-divider"></div>
+      <div class="streak-item">
+        <ion-icon name="trophy" color="success"></ion-icon>
+        <div class="streak-info">
+          <span class="streak-value">{{medStreak?.highestStreak || 0}}</span>
+          <span class="streak-label">Best</span>
+        </div>
+      </div>
+      <div class="streak-divider"></div>
+      <div class="streak-item">
+        <ion-icon name="time" color="primary"></ion-icon>
+        <div class="streak-info">
+          <span class="streak-value">{{totalMinutes || 0}}</span>
+          <span class="streak-label">Minutes</span>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Last Meditation Card -->
+  @if (lastMeditation) {
+    <ion-card class="last-meditation-card">
+      <div class="card-header">
+        <h4>Last Session</h4>
+        <ion-chip color="success">
+          <ion-icon name="checkmark-circle"></ion-icon>
+          <span>Completed</span>
+        </ion-chip>
+      </div>
+      
+      <div class="meditation-details">
+        <div class="detail-item">
+          <ion-icon name="time-outline" color="primary"></ion-icon>
+          <span>{{lastMeditation.duration}} minutes</span>
+        </div>
+        <div class="detail-item">
+          <ion-icon name="fitness-outline" color="primary"></ion-icon>
+          <span>{{lastMeditation.enemy}}</span>
+        </div>
+        <div class="detail-item">
+          <ion-icon name="calendar-outline" color="primary"></ion-icon>
+          <span>{{formatDate(lastMeditation.timestamp)}}</span>
+        </div>
+      </div>
+    </ion-card>
+  }
+
+  <!-- Section Header -->
+  <div class="section-header">
+    <ion-icon name="fitness-outline" color="primary"></ion-icon>
+    <h3>Select Your Focus</h3>
+  </div>
+
+  <!-- Enemy Grid -->
+  @if (loading) {
+    <div class="loading-state">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <p>Loading your meditation journey...</p>
+    </div>
+  } @else if (sixEnemies.length > 0) {
+    <ion-grid class="enemy-grid ion-no-margin ion-no-padding">
+      <ion-row>
+        @for (enemy of sixEnemies; track $index) {
+          <ion-col size="4" class="ion-no-padding ion-no-margin">
+            <ion-card class="enemy-card"
+              [class.recommended]="enemy.isRecommended"
+              (click)="moveToMeditationSetup(enemy)">
+              
+              <div class="enemy-icon-wrapper">
+                <ion-avatar color="primary" class="app-img">
+                  <app-meditation-icon [icon]="enemy.key"></app-meditation-icon>
+                </ion-avatar>
+                @if (enemy.isRecommended) {
+                  <ion-badge color="success" class="recommended-badge">
+                    <ion-icon name="star"></ion-icon>
+                  </ion-badge>
+                }
+              </div>
+              
+              <div class="enemy-name-wrapper">
+                <ion-text class="enemy-name-line">{{getFirstLine(enemy.name)}}</ion-text>
+                <ion-text class="enemy-name-line subtitle">{{getSecondLine(enemy.name)}}</ion-text>
+              </div>
+            </ion-card>
+          </ion-col>
+        }
+      </ion-row>
+    </ion-grid>
+  }
+
+  <!-- CTA Section -->
+  <div class="cta-section">
+    <ion-button
+      expand="block"
+      size="large"
+      shape="round"
+      class="primary-cta"
+      (click)="startSmartMeditation()">
+      <ion-icon slot="start" name="sparkles"></ion-icon>
+      Start Smart Meditation
+    </ion-button>
+    <p class="cta-description">
+      <ion-icon name="analytics-outline"></ion-icon>
+      Recommended based on your recent check-ins
+    </p>
+  </div>
+
+  <!-- Bottom Spacing -->
+  <div class="bottom-spacing"></div>
+</ion-content>

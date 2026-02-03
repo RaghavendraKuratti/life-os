@@ -1,0 +1,17 @@
+.app-img {
+    width: 50%; 
+    height: 25%; 
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+}
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    ion-item {
+        border: 1px solid var(--ion-color-primary);
+        border-radius: 16px;
+    }
+}

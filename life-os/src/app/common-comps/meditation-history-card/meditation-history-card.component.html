@@ -1,0 +1,18 @@
+
+@if (data) {
+  <ion-card>
+    <ion-item lines="none">
+      <ion-avatar slot="start">
+        <app-meditation-icon [icon]="data.enemy"></app-meditation-icon>
+      </ion-avatar>
+      <ion-text>
+        <p class="title">{{data.enemy}}</p>
+        <p class="subtitle">{{data.mantra}}</p>
+        <span class="timestamp">{{data.timestamp | date:'medium'}}</span>
+      </ion-text>
+      <ion-text slot="end">
+        <h6 class="duration">{{data.duration}} Min</h6>
+      </ion-text>
+    </ion-item>
+  </ion-card>
+}

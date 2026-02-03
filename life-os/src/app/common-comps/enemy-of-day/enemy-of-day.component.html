@@ -1,0 +1,60 @@
+<ion-card *ngIf="enemyOfDay && !loading" class="enemy-of-day-card">
+  <ion-card-header>
+    <ion-card-subtitle>
+      <ion-icon name="flash"></ion-icon>
+      TODAY'S PRACTICE
+    </ion-card-subtitle>
+    <ion-card-title>
+      {{ getEnemyName(enemyOfDay.enemy) }}
+    </ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <div class="practice-section">
+      <div class="practice-text">
+        {{ enemyOfDay.practice }}
+      </div>
+      
+      <div class="practice-meta">
+        <ion-chip [color]="getEnemyColor(enemyOfDay.enemy)" outline="true">
+          <ion-icon name="time-outline"></ion-icon>
+          <ion-label>{{ enemyOfDay.duration }}</ion-label>
+        </ion-chip>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <ion-button expand="block" (click)="onStartPractice()" class="primary-action-btn">
+        <ion-icon slot="start" name="play-circle-outline"></ion-icon>
+        Start Practice
+      </ion-button>
+      
+      <ion-button expand="block" fill="outline" (click)="onLearnMoreClick()" class="secondary-action-btn">
+        <ion-icon slot="start" name="information-circle-outline"></ion-icon>
+        Learn More
+      </ion-button>
+    </div>
+  </ion-card-content>
+</ion-card>
+
+<!-- Loading State -->
+<ion-card *ngIf="loading" class="enemy-of-day-card">
+  <ion-card-header>
+    <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-skeleton-text animated style="width: 100%; height: 60px"></ion-skeleton-text>
+  </ion-card-content>
+</ion-card>
+
+<!-- No Data State -->
+<ion-card *ngIf="!enemyOfDay && !loading" class="enemy-of-day-card no-data">
+  <ion-card-content>
+    <div class="no-data-content">
+      <ion-icon name="flash-outline" size="large" color="medium"></ion-icon>
+      <p>Daily practice will appear here</p>
+    </div>
+  </ion-card-content>
+</ion-card>

@@ -1,0 +1,31 @@
+ion-card {
+    border: 1px solid var(--ion-color-primary);
+    margin: 1rem;
+    ion-item{
+        --background: transperent;
+        padding: 5px;
+        ion-avatar{
+            width: 3em;
+            height: 3em;
+            padding: 9px;
+            border: 1px solid var(--ion-color-primary);
+        }
+        .title {
+            font-size: var(--title-font-size);
+            font-weight: 600;
+            margin: 5px 0;
+        }
+        .subtitle {
+            font-size: var(--subtitle-font-size);
+            font-weight: 100;
+            margin: 5px 0;
+        }
+        .duration {
+            font-size: 0.75em;
+        }
+        .timestamp {
+            font-size: var(--desc-font-size);
+            font-weight: 300;
+        }
+    }
+}

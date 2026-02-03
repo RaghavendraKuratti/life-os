@@ -1,0 +1,483 @@
+// ============================================
+// HOME PAGE - MODERN DESIGN
+// ============================================
+
+// Empty State Styles
+.empty-state {
+  text-align: center;
+  padding: 24px 16px;
+  
+  .empty-state-icon {
+    margin-bottom: 16px;
+    
+    ion-icon {
+      font-size: 64px;
+    }
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ion-color-dark);
+    margin: 0 0 12px 0;
+  }
+  
+  .empty-state-message {
+    font-size: 0.95rem;
+    color: var(--ion-color-medium);
+    line-height: 1.5;
+    margin: 0 0 24px 0;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .getting-started {
+    background: linear-gradient(135deg, rgba(168, 108, 45, 0.05) 0%, rgba(168, 108, 45, 0.02) 100%);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+    text-align: left;
+    
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--ion-color-dark);
+      margin: 0 0 16px 0;
+      text-align: center;
+    }
+    
+    .step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      
+      .step-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        
+        ion-icon {
+          font-size: 24px;
+          flex-shrink: 0;
+          margin-top: 2px;
+        }
+        
+        span {
+          flex: 1;
+          font-size: 0.9rem;
+          color: var(--ion-color-dark);
+          line-height: 1.4;
+        }
+      }
+    }
+  }
+}
+
+// Enemy of Day Card
+.enemy-of-day-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    
+    &:active {
+        transform: scale(0.98);
+    }
+    
+    .enemy-icon-wrapper {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(220, 53, 69, 0.05) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        
+        ion-icon {
+            font-size: 32px;
+            color: var(--ion-color-danger);
+        }
+    }
+    
+    .enemy-content {
+        flex: 1;
+        
+        .enemy-name {
+            margin: 0 0 4px 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--ion-color-dark);
+        }
+        
+        .enemy-label {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--ion-color-medium);
+            font-weight: 500;
+        }
+    }
+}
+
+// Header Styling
+ion-header {
+  &.ion-no-border {
+    --border-width: 0;
+  }
+
+  .header-toolbar {
+    --background: var(--ion-color-light);
+    --color: var(--ion-color-dark);
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+
+      .user-section {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+
+        .user-avatar {
+          width: 44px;
+          height: 44px;
+          // border: 2px solid var(--ion-color-primary);
+          box-shadow: 0 2px 8px rgba(168, 108, 45, 0.15);
+        }
+
+        .user-info {
+          flex: 1;
+
+          .greeting {
+            margin: 0;
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--ion-color-dark);
+            letter-spacing: -0.3px;
+          }
+
+          .user-email {
+            margin: 2px 0 0 0;
+            font-size: 0.8em;
+            color: var(--ion-color-medium);
+            font-weight: 400;
+          }
+        }
+      }
+
+      .streak-badge {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--ion-color-warning);
+        padding: 8px 14px;
+        border-radius: 20px;
+        box-shadow: 0 2px 8px rgba(230, 184, 0, 0.3);
+
+        ion-icon {
+          font-size: 18px;
+          color: white;
+        }
+
+        span {
+          font-size: 0.9em;
+          font-weight: 700;
+          color: var(--ion-color-dark);
+        }
+      }
+    }
+  }
+}
+
+// Content Styling
+.home-content {
+  --background: var(--ion-color-light);
+
+  .content-section {
+    margin: 16px;
+    animation: fadeInUp 0.4s ease-out;
+  }
+
+  // Shloka Wrapper
+  .shloka-wrapper {
+    margin-top: 0;
+    padding-top: 16px;
+  }
+
+  // Stats Grid
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 8px;
+
+    .stat-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--ion-color-primary), var(--ion-color-secondary));
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+      }
+
+      &:active {
+        transform: scale(0.97);
+      }
+
+      &:hover::before {
+        transform: scaleX(1);
+      }
+
+      .stat-icon-wrapper {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        &.flame {
+          background: linear-gradient(135deg, #FFA726 0%, #FF6F00 100%);
+        }
+
+        &.shield {
+          background: linear-gradient(135deg, #EF5350 0%, #C62828 100%);
+        }
+
+        ion-icon {
+          font-size: 28px;
+          color: white;
+        }
+      }
+
+      .stat-info {
+        text-align: center;
+
+        .stat-value {
+          margin: 0;
+          font-size: 1.8em;
+          font-weight: 700;
+          color: var(--ion-color-dark);
+          line-height: 1;
+        }
+
+        .stat-label {
+          margin: 6px 0 0 0;
+          font-size: 0.85em;
+          color: var(--ion-color-medium);
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  // Section Headers
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding: 0 4px;
+
+    ion-icon {
+      font-size: 24px;
+      color: var(--ion-color-primary);
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 1.2em;
+      font-weight: 700;
+      color: var(--ion-color-dark);
+      letter-spacing: -0.3px;
+    }
+  }
+
+  // Insights Section
+  .insights-section {
+    app-weekly-insights {
+      display: block;
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    }
+  }
+
+  // Enemies Section
+  .enemies-section {
+    .section-description {
+      background: linear-gradient(135deg, rgba(168, 108, 45, 0.08) 0%, rgba(168, 108, 45, 0.04) 100%);
+      padding: 12px 16px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      border-left: 3px solid var(--ion-color-primary);
+
+      p {
+        margin: 0;
+        font-size: 0.85rem;
+        line-height: 1.5;
+        color: var(--ion-color-dark);
+        font-weight: 400;
+      }
+    }
+
+    .enemies-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      background: white;
+      padding: 20px 12px;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+
+      .enemy-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        padding: 8px 4px;
+        border-radius: 12px;
+        text-align: center;
+
+        &:active {
+          transform: scale(0.95);
+          background: var(--ion-color-light);
+        }
+
+        // Ensure progress circle and text are centered
+        app-progress-circle {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+        }
+      }
+    }
+
+    .loading-state {
+      background: white;
+      padding: 40px 20px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+
+      ion-spinner {
+        --color: var(--ion-color-primary);
+        transform: scale(1.2);
+        margin-bottom: 16px;
+      }
+
+      p {
+        margin: 0;
+        color: var(--ion-color-medium);
+        font-size: 0.9em;
+      }
+    }
+  }
+
+  // Journal Section
+  .journal-section {
+    app-common-journal {
+      display: block;
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    }
+  }
+
+  // Bottom Spacing
+  .bottom-spacing {
+    height: 24px;
+  }
+}
+
+// Animations
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive Design
+@media (min-width: 768px) {
+  .home-content {
+    .content-section {
+      margin: 20px auto;
+      max-width: 600px;
+    }
+
+    .stats-grid {
+      gap: 16px;
+
+      .stat-card {
+        padding: 24px;
+      }
+    }
+
+    .enemies-section .enemies-grid {
+      padding: 24px;
+      gap: 20px;
+    }
+  }
+}
+
+// Dark Mode Support (Future)
+@media (prefers-color-scheme: dark) {
+  .home-content {
+    --background: #1a1a1a;
+
+    .stat-card,
+    .insights-section app-weekly-insights,
+    .enemies-section .enemies-grid,
+    .enemies-section .loading-state,
+    .journal-section app-common-journal {
+      background: #2a2a2a;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .section-header h3,
+    .stat-card .stat-info .stat-value {
+      color: #ffffff;
+    }
+  }
+}

@@ -1,0 +1,82 @@
+// For information on how to create your own theme, please see:
+// http://ionicframework.com/docs/theming/
+:root {
+	--ion-color-primary: #a86c2d;
+	--ion-color-primary-rgb: 168,108,45;
+	--ion-color-primary-contrast: #fff;
+	--ion-color-primary-contrast-rgb: 0,0,0;
+	--ion-color-primary-shade: #945f28;
+	--ion-color-primary-tint: #b17b42;
+
+	--ion-color-secondary: #d8a35d;
+	--ion-color-secondary-rgb: 216,163,93;
+	--ion-color-secondary-contrast: #000000;
+	--ion-color-secondary-contrast-rgb: 0,0,0;
+	--ion-color-secondary-shade: #be8f52;
+	--ion-color-secondary-tint: #dcac6d;
+
+	--ion-color-tertiary: #f6e7d5;
+	--ion-color-tertiary-rgb: 246,231,213;
+	--ion-color-tertiary-contrast: #000000;
+	--ion-color-tertiary-contrast-rgb: 0,0,0;
+	--ion-color-tertiary-shade: #d8cbbb;
+	--ion-color-tertiary-tint: #f7e9d9;
+
+	--ion-color-success: #82b366;
+	--ion-color-success-rgb: 130,179,102;
+	--ion-color-success-contrast: #000000;
+	--ion-color-success-contrast-rgb: 0,0,0;
+	--ion-color-success-shade: #729e5a;
+	--ion-color-success-tint: #8fbb75;
+
+	--ion-color-warning: #e6b800;
+	--ion-color-warning-rgb: 230,184,0;
+	--ion-color-warning-contrast: #000000;
+	--ion-color-warning-contrast-rgb: 0,0,0;
+	--ion-color-warning-shade: #caa200;
+	--ion-color-warning-tint: #e9bf1a;
+
+	--ion-color-danger: #c94c4c;
+	--ion-color-danger-rgb: 201,76,76;
+	--ion-color-danger-contrast: #000000;
+	--ion-color-danger-contrast-rgb: 0,0,0;
+	--ion-color-danger-shade: #b14343;
+	--ion-color-danger-tint: #ce5e5e;
+
+	--ion-color-light: #fdfdf8;
+	--ion-color-light-rgb: 253,253,248;
+	--ion-color-light-contrast: #000000;
+	--ion-color-light-contrast-rgb: 0,0,0;
+	--ion-color-light-shade: #dfdfda;
+	--ion-color-light-tint: #fdfdf9;
+
+	--ion-color-medium: #a78c7a;
+	--ion-color-medium-rgb: 167,140,122;
+	--ion-color-medium-contrast: #000000;
+	--ion-color-medium-contrast-rgb: 0,0,0;
+	--ion-color-medium-shade: #937b6b;
+	--ion-color-medium-tint: #b09887;
+
+	--ion-color-dark: #4a2f1a;
+	--ion-color-dark-rgb: 74,47,26;
+	--ion-color-dark-contrast: #ffffff;
+	--ion-color-dark-contrast-rgb: 255,255,255;
+	--ion-color-dark-shade: #412917;
+	--ion-color-dark-tint: #5c4431;
+
+
+	--title-font-size: 0.75em;
+	--title-font-weight: 600;
+	--subtitle-font-size: 0.75em;
+	--subtitle-font-weight:100;
+	--desc-font-size: 0.75em;
+	--desc-font-weight: 100;
+
+	--text-font-size: 0.75em;
+	--text-font-weight: 100;
+
+	--icon-font-size: 1.25em;
+	--icon-card-font-size: 2em;
+}
+
+/*# sourceMappingURL=dark.system.css.map */

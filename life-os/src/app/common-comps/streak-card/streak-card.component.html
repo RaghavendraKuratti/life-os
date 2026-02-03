@@ -1,0 +1,45 @@
+
+@if (streakData) {
+  <ion-card>
+    <ion-item lines="none">
+      <ion-avatar slot="start">
+        <app-meditation-icon [icon]="IconType.LOTUS"></app-meditation-icon>
+      </ion-avatar>
+      <ion-text>
+        <p class="title">{{streakData.header}}</p>
+        <p class="title">
+          Current Streaks: 
+          <ion-badge color="primary" mode="ios">
+            {{streakData.checkinDays > 1 ? streakData.checkinDays + ' Day\'s' : streakData.checkinDays + ' Day'}}
+          </ion-badge>
+        </p>
+        <p class="title">
+          Highest Streaks: <ion-badge color="primary" mode="ios">
+            {{streakData.highestScore > 1 ? streakData.highestScore + ' Day\'s' : streakData.highestScore + ' Day'}}
+          </ion-badge> </p>
+        <span class="timestamp">{{streakData.lastCheckin | date:'medium'}}</span>
+      </ion-text>
+    
+    </ion-item>
+  </ion-card>
+} 
+<!-- @else { 
+  <ion-card>
+    <ion-item lines="none">
+      <ion-avatar slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-avatar>
+      <ion-text>
+        <p class="title"><ion-skeleton-text animated style="width: 100%"></ion-skeleton-text></p>
+        <p class="title">
+          <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+          
+        </p>
+        <p class="title">
+          <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text></p>
+        <span class="timestamp"><ion-skeleton-text animated style="width: 100%"></ion-skeleton-text></span>
+      </ion-text>
+    
+    </ion-item>
+  </ion-card>
+} -->

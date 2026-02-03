@@ -1,0 +1,45 @@
+
+.svg-container {
+    display: flex;
+    align-items: center;
+    .svg-img {
+        width: 100%;
+        svg path {
+            // fill: transparent;
+            stroke-width: 10px;
+            stroke: var(--ion-color-primary);
+            fill: var(--ion-color-primary);
+            stroke-dasharray: 1480;
+            stroke-dashoffset: 1480;
+            animation: animate-meditation 500ms forwards ease;
+        }
+    }
+    .svg-img.active {
+        svg path {
+            stroke: var(--ion-color-primary-contrast);
+            fill: var(--ion-color-primary-contrast);
+            animation: animate-meditation-active  500ms forwards ease;
+        }
+    }
+}
+
+@keyframes animate-meditation {
+    0% {
+        // stroke-dashoffset: 1480;
+        fill: transparent;
+    }
+    100% {
+        // stroke-dashoffset: 0;
+        fill: var(--ion-color-primary);
+    }
+}
+@keyframes animate-meditation-active {
+    0% {
+        // stroke-dashoffset: 1480;
+        fill: transparent;
+    }
+    100% {
+        // stroke-dashoffset: 0;
+        fill: var(--ion-color-primary-contrast);
+    }
+}

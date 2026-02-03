@@ -1,0 +1,235 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>Profile Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="profileSettingsForm">
+    <!-- Profile Header Card -->
+    <ion-card class="profile-card">
+      <ion-card-content>
+        <div class="profile-header">
+          @if (profileSettings.profilePic) {
+            <ion-avatar class="avatar" (click)="changePic()">
+              <img [src]="profileSettings.profilePic" alt="Profile Picture" />
+            </ion-avatar>
+          } @else {
+            <ion-avatar class="avatar" (click)="changePic()">
+              <app-meditation-icon [icon]="IconType.LOTUS"></app-meditation-icon>
+            </ion-avatar>
+          }
+          <ion-button fill="clear" size="small" class="change-pic-btn" (click)="changePic()">
+            <ion-icon slot="start" name="camera-outline"></ion-icon>
+            Change Photo
+          </ion-button>
+          <div class="user-info">
+            <h2 class="user-name">{{getInfoFormData("firstName")}} {{getInfoFormData("lastName")}}</h2>
+            <p class="user-contact">
+              @if(getInfoFormData("contact")) {
+                <ion-icon name="call-outline"></ion-icon>
+                {{getInfoFormData("contact")}}
+              }
+            </p>
+            <p class="user-email">
+              <ion-icon name="mail-outline"></ion-icon>
+              {{profileSettings.email}}
+            </p>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Meditation Statistics Card -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="stats-chart-outline" color="primary"></ion-icon>
+          Meditation Stats
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        @if (meditationStats.loading) {
+          <div class="stats-loading">
+            <ion-spinner name="crescent" color="primary"></ion-spinner>
+          </div>
+        } @else {
+          <div class="stats-grid">
+            <div class="stat-item">
+              <ion-icon name="calendar-outline" color="primary"></ion-icon>
+              <div class="stat-info">
+                <h3>{{meditationStats.totalSessions}}</h3>
+                <p>Sessions</p>
+              </div>
+            </div>
+            <div class="stat-item">
+              <ion-icon name="time-outline" color="primary"></ion-icon>
+              <div class="stat-info">
+                <h3>{{meditationStats.totalMinutes}}m</h3>
+                <p>Minutes</p>
+              </div>
+            </div>
+            <div class="stat-item">
+              <ion-icon name="flame-outline" color="primary"></ion-icon>
+              <div class="stat-info">
+                <h3>{{meditationStats.currentStreak}}</h3>
+                <p>Streak</p>
+              </div>
+            </div>
+            <div class="stat-item">
+              <ion-icon name="trophy-outline" color="primary"></ion-icon>
+              <div class="stat-info">
+                <h3>{{meditationStats.longestStreak}}</h3>
+                <p>Best</p>
+              </div>
+            </div>
+          </div>
+        }
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Personal Information Card -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="person-outline" color="primary"></ion-icon>
+          Personal Information
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item lines="none">
+          <ion-label position="stacked">First Name</ion-label>
+          <ion-input formControlName="firstName" type="text" placeholder="Enter first name"></ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label position="stacked">Last Name</ion-label>
+          <ion-input formControlName="lastName" type="text" placeholder="Enter last name"></ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label position="stacked">Contact Number</ion-label>
+          <ion-input formControlName="contact" type="tel" placeholder="Enter mobile number"></ion-input>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Meditation Preferences Card -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="fitness-outline" color="primary"></ion-icon>
+          Preferences
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item lines="none" class="select-item">
+          <ion-label>Meditation Sound</ion-label>
+          <ion-select formControlName="meditationSound" placeholder="Select Sound" interface="popover">
+            <ion-select-option value="neural">Binaural Beats</ion-select-option>
+            <ion-select-option value="om">Om Chanting</ion-select-option>
+            <ion-select-option value="silence">Silence</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item lines="none" class="select-item">
+          <ion-label>Default Enemy Focus</ion-label>
+          <ion-select formControlName="defaultEnemy" placeholder="Select Enemy" interface="popover">
+            @for (enemy of enemies; track $index) {
+              <ion-select-option [value]="enemy">{{enemy}}</ion-select-option>
+            }
+            <ion-select-option value="auto">Auto (Recommended)</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Reminders Card -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="notifications-outline" color="primary"></ion-icon>
+          Reminders
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <!-- Notification Permission Status -->
+        <div class="notification-status">
+          @if (notificationPermissionStatus === 'granted') {
+            <ion-chip color="success">
+              <ion-icon name="checkmark-circle"></ion-icon>
+              <ion-label>Notifications Enabled</ion-label>
+            </ion-chip>
+          } @else if (notificationPermissionStatus === 'denied') {
+            <ion-chip color="danger">
+              <ion-icon name="close-circle"></ion-icon>
+              <ion-label>Notifications Blocked</ion-label>
+            </ion-chip>
+            <p class="permission-hint">Please enable notifications in your device settings</p>
+          } @else {
+            <ion-chip color="warning">
+              <ion-icon name="alert-circle"></ion-icon>
+              <ion-label>Permission Not Set</ion-label>
+            </ion-chip>
+          }
+        </div>
+
+        <ion-item lines="none" class="time-item">
+          <ion-label>Reminder Time</ion-label>
+          <ion-datetime-button presentation="time" datetime="reminderTime"></ion-datetime-button>
+        </ion-item>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime formControlName="reminderTime" presentation="time" id="reminderTime"></ion-datetime>
+          </ng-template>
+        </ion-modal>
+        @if (getInfoFormData("reminderTime")) {
+          <ion-item lines="none" class="toggle-item">
+            <ion-label>Daily Meditation</ion-label>
+            <ion-toggle slot="end" formControlName="dailyReminder" (ionChange)="onReminderToggle()"></ion-toggle>
+          </ion-item>
+        }
+        <ion-item lines="none" class="toggle-item">
+          <ion-label>Journaling</ion-label>
+          <ion-toggle slot="end" formControlName="jounralingReminder"></ion-toggle>
+        </ion-item>
+        
+        @if (notificationMessage) {
+          <div class="notification-message">
+            <p>{{notificationMessage}}</p>
+          </div>
+        }
+      </ion-card-content>
+    </ion-card>
+
+    <!-- App Settings Card -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="settings-outline" color="primary"></ion-icon>
+          Settings
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item lines="none" class="toggle-item">
+          <ion-label>Push Notifications</ion-label>
+          <ion-toggle slot="end" formControlName="notifications"></ion-toggle>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Account Actions Card -->
+    <ion-card class="account-card">
+      <ion-card-content>
+        <ion-button expand="block" fill="outline" color="primary" (click)="changePassword()">
+          <ion-icon slot="start" name="key-outline"></ion-icon>
+          Change Password
+        </ion-button>
+        <ion-button expand="block" fill="solid" color="danger" (click)="logout()">
+          <ion-icon slot="start" name="log-out-outline"></ion-icon>
+          Log Out
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+    
+    <!-- Bottom Spacing -->
+    <div class="bottom-spacing"></div>
+  </form>
+</ion-content>

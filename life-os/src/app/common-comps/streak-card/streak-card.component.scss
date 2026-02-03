@@ -1,0 +1,40 @@
+
+ion-card {
+    border: 1px solid var(--ion-color-primary);
+    margin: 1rem;
+    ion-item{
+        --background: transperent;
+        padding: 5px;
+        ion-avatar{
+            width: 3em;
+            height: 3em;
+            padding: 9px;
+            border: 1px solid var(--ion-color-primary);
+        }
+        ion-text {
+            width: 100%;
+            .title {
+                font-size: var(--title-font-size);
+                font-weight: var(--title-font-weight);
+                margin: 5px 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                ion-badge {
+                    font-size: var(--title-font-weight);
+                    margin: 0;
+                    padding: 2px 5px;
+                }
+            }
+            .subtitle {
+                font-size: var(--subtitle-font-size);
+                font-weight: 100;
+                margin: 5px 0;
+            }
+            .timestamp {
+                font-size: var(--desc-font-size);
+                font-weight: 300;
+            }
+        }
+    }
+}

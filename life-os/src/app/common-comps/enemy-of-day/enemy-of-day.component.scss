@@ -1,0 +1,154 @@
+.enemy-of-day-card {
+  margin: 16px;
+  border-radius: 16px;
+  background: var(--ion-card-background, #1a1a1a);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+
+  ion-card-header {
+    padding: 16px 16px 8px 16px;
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 152, 0, 0.05) 100%);
+    border-bottom: 1px solid rgba(255, 193, 7, 0.2);
+
+    ion-card-subtitle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      color: var(--ion-color-warning);
+      font-weight: 600;
+
+      ion-icon {
+        font-size: 16px;
+      }
+    }
+
+    ion-card-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ion-color-light);
+    }
+  }
+
+  ion-card-content {
+    padding: 16px;
+  }
+}
+
+.practice-section {
+  .practice-text {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    border-left: 3px solid var(--ion-color-warning);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--ion-color-light);
+    font-weight: 400;
+  }
+
+  .practice-meta {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 8px;
+
+    ion-chip {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 600;
+      height: 28px;
+
+      ion-icon {
+        font-size: 16px;
+      }
+
+      ion-label {
+        margin: 0 4px;
+      }
+    }
+  }
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+
+  ion-button {
+    flex: 1;
+    margin: 0;
+    height: 40px;
+    font-size: 13px;
+    font-weight: 600;
+    --border-radius: 8px;
+
+    ion-icon {
+      font-size: 18px;
+    }
+  }
+
+  .primary-action-btn {
+    --background: rgba(200, 168, 112, 0.15);
+    --background-hover: rgba(200, 168, 112, 0.25);
+    --background-activated: rgba(200, 168, 112, 0.3);
+    --color: #C8A870;
+    --border-width: 1px;
+    --border-style: solid;
+    --border-color: rgba(200, 168, 112, 0.4);
+    text-transform: none;
+    letter-spacing: 0.3px;
+  }
+
+  .secondary-action-btn {
+    --color: #C8A870;
+    --border-color: rgba(200, 168, 112, 0.4);
+    --background-hover: rgba(200, 168, 112, 0.1);
+    --background-activated: rgba(200, 168, 112, 0.15);
+    text-transform: none;
+    letter-spacing: 0.3px;
+  }
+}
+
+.no-data {
+  background: rgba(255, 255, 255, 0.03);
+  
+  .no-data-content {
+    text-align: center;
+    padding: 40px 20px;
+
+    ion-icon {
+      margin-bottom: 16px;
+      opacity: 0.4;
+    }
+
+    p {
+      color: var(--ion-color-medium);
+      font-size: 14px;
+      margin: 0;
+      line-height: 1.6;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 360px) {
+  .enemy-of-day-card {
+    ion-card-header {
+      ion-card-title {
+        font-size: 18px;
+      }
+    }
+  }
+
+  .practice-section {
+    .practice-text {
+      font-size: 14px;
+      padding: 14px;
+    }
+  }
+}

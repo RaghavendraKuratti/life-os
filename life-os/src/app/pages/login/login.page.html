@@ -1,0 +1,52 @@
+<ion-content fullscreen="true">
+  <!-- <ion-img style="width: 60%; margin: auto;" class="app-img ion-padding" src="assets/icon/lotus.png"></ion-img> -->
+  <ion-avatar  color="primary"  class="app-img">
+    <app-meditation-icon [icon]="IconType.LOTUS"></app-meditation-icon>
+  </ion-avatar>
+  <ion-text color="secondary" class="ion-text-center">
+    <h1>Welcome</h1>
+  </ion-text>
+
+  <div class="login-form">
+    <ion-item lines="none">
+      <ion-input placeholder="Email" [(ngModel)]="email">
+        <ion-icon color="primary" slot="start" name="person" aria-hidden="true"></ion-icon>
+      </ion-input>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-input placeholder="Password" type="password" [(ngModel)]="password">
+        <ion-icon color="primary" slot="start" name="lock-closed" aria-hidden="true"></ion-icon>
+        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+      </ion-input>
+    </ion-item>
+  </div>
+
+  <ion-button class="ion-padding" (click)="onSubmit()" expand="full" color="primary">
+    {{isRegister ? 'Register' : 'Login'}}
+  </ion-button>
+  <ion-button (click)="toggleMode()" expand="full" fill="clear">
+    {{isRegister ? 'Have an account? Login' : 'No account? Register'}}
+  </ion-button>
+</ion-content>
+<ion-footer>
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-col >
+        
+      </ion-col>
+      <ion-col size="auto" class="ion-text-center">
+        <ion-button shape="round" fill="clear" (click)="googleSignin()">
+          <ion-icon name="logo-google"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size="auto" class="ion-text-center">
+        <ion-button shape="round" fill="clear">
+          <ion-icon name="logo-facebook"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col >
+        
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

@@ -1,0 +1,315 @@
+.action-btn {
+  margin-top: 12px;
+  --background: rgba(200, 168, 112, 0.15);
+  --background-hover: rgba(200, 168, 112, 0.25);
+  --background-activated: rgba(200, 168, 112, 0.3);
+  --color: #C8A870;
+  --border-radius: 8px;
+  --border-width: 1px;
+  --border-style: solid;
+  --border-color: rgba(200, 168, 112, 0.4);
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  height: 40px;
+  font-size: 13px;
+  
+  .meditation-icon-wrapper {
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 4px;
+    
+    ::ng-deep app-meditation-icon {
+      width: 100%;
+      height: 100%;
+      display: block;
+      
+      .svg-container {
+        width: 100%;
+        height: 100%;
+        
+        .svg-img {
+          width: 100%;
+          height: 100%;
+          
+          svg {
+            width: 100%;
+            height: 100%;
+            
+            path {
+              fill: #C8A870 !important;
+              stroke: #C8A870 !important;
+              animation: none !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.weekly-insights-card {
+  margin: 16px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(200, 168, 112, 0.08) 0%, rgba(200, 168, 112, 0.03) 100%);
+  border: 1px solid rgba(200, 168, 112, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  ion-card-header {
+    padding: 16px 16px 8px 16px;
+
+    ion-card-subtitle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      color: var(--ion-color-medium);
+      font-weight: 500;
+
+      ion-icon {
+        font-size: 16px;
+      }
+    }
+
+    ion-card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--ion-color-dark);
+    }
+  }
+
+  ion-card-content {
+    padding: 0 16px 16px 16px;
+  }
+}
+
+.reflection-section {
+  background: rgba(200, 168, 112, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-left: 4px solid #C8A870;
+
+  .reflection-text {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--ion-color-dark);
+    font-style: italic;
+    font-weight: 400;
+  }
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.metric-card {
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid rgba(200, 168, 112, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+  .metric-icon-ionic {
+    font-size: 32px;
+    flex-shrink: 0;
+  }
+
+  .metric-content {
+    flex: 1;
+    min-width: 0;
+
+    .metric-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--ion-color-medium);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .metric-value {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--ion-color-dark);
+    }
+
+    .metric-detail {
+      font-size: 12px;
+      color: var(--ion-color-medium);
+      opacity: 0.8;
+    }
+  }
+}
+
+.days-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+
+  .day-card {
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid rgba(200, 168, 112, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+    ion-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .day-content {
+      flex: 1;
+
+      .day-label {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: var(--ion-color-medium);
+        margin-bottom: 6px;
+        font-weight: 600;
+      }
+
+      .day-date {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--ion-color-dark);
+      }
+    }
+  }
+
+  .best-day {
+    border-left: 3px solid var(--ion-color-success);
+    background: rgba(16, 220, 96, 0.08);
+  }
+
+  .worst-day {
+    border-left: 3px solid var(--ion-color-warning);
+    background: rgba(255, 206, 0, 0.08);
+  }
+}
+
+.progress-section {
+  margin-top: 16px;
+  
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 12px;
+
+    span:first-child {
+      color: var(--ion-color-medium);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    span:last-child {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--ion-color-dark);
+    }
+  }
+
+  ion-progress-bar {
+    height: 10px;
+    border-radius: 5px;
+    --background: rgba(200, 168, 112, 0.2);
+  }
+}
+
+.no-data {
+  background: rgba(255, 255, 255, 0.03);
+  
+  .no-data-content {
+    text-align: center;
+    padding: 24px 20px;
+
+    .empty-icon {
+      margin-bottom: 16px;
+      
+      ion-icon {
+        font-size: 56px;
+      }
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--ion-color-dark);
+      margin: 0 0 12px 0;
+    }
+
+    .empty-message {
+      color: var(--ion-color-medium);
+      font-size: 0.9rem;
+      margin: 0 0 20px 0;
+      line-height: 1.6;
+      max-width: 350px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .benefits-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+      text-align: left;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+
+      .benefit-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        ion-icon {
+          font-size: 20px;
+          flex-shrink: 0;
+        }
+
+        span {
+          flex: 1;
+          font-size: 0.85rem;
+          color: var(--ion-color-dark);
+          line-height: 1.4;
+        }
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 360px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .days-section {
+    grid-template-columns: 1fr;
+  }
+}

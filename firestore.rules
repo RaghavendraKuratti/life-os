@@ -1,0 +1,76 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user owns the resource
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Users collection - users can only access their own data
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow write: if isOwner(userId);
+      
+      // Meditation history subcollection
+      match /meditationHistory/{sessionId} {
+        allow read: if isOwner(userId);
+        allow write: if isOwner(userId);
+      }
+      
+      // User-specific collections (if any)
+      match /{document=**} {
+        allow read: if isOwner(userId);
+        allow write: if isOwner(userId);
+      }
+    }
+    
+    // Enemy check-ins - must belong to authenticated user
+    match /enemyCheckins/{checkinId} {
+      allow read: if isAuthenticated() 
+                  && resource.data.userid == request.auth.uid;
+      allow create: if isAuthenticated() 
+                    && request.resource.data.userid == request.auth.uid;
+      allow update, delete: if isAuthenticated() 
+                            && resource.data.userid == request.auth.uid;
+    }
+    
+    // Journal entries - must belong to authenticated user
+    match /journels/{journalId} {
+      allow read: if isAuthenticated() 
+                  && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() 
+                    && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAuthenticated() 
+                            && resource.data.userId == request.auth.uid;
+    }
+    
+    // Verses - public read-only
+    match /verses/{verseId} {
+      allow read: if true;
+      allow write: if false; // Only admins can write (via backend)
+    }
+    
+    // Enemy list - public read-only
+    match /enemyList/{enemyId} {
+      allow read: if true;
+      allow write: if false; // Only admins can write (via backend)
+    }
+    
+    // Shloka collection - public read-only (if exists)
+    match /shlokas/{shlokaId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    
+    // Deny all other access by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

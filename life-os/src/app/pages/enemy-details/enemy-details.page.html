@@ -1,0 +1,101 @@
+@if (enemy) {
+  <ion-header class="ion-no-padding">
+    <ion-toolbar class="ion-no-padding">
+      <ion-item color="primary">
+        <ion-buttons slot="start">
+          <ion-back-button text="" defaultHref="/"></ion-back-button>
+        </ion-buttons>
+        <ion-label>
+          {{enemy.name}}
+        </ion-label>
+        <ion-buttons slot="end">
+          <ion-button fill="clear">
+            <ion-icon slot="start" name="settings-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-toolbar>
+    <!-- <ion-toolbar color="primary" class="shloka-toolbar">
+    </ion-toolbar> -->
+  </ion-header>
+  <ion-content>
+    <app-shloka-card [verse]="varse"></app-shloka-card>
+    <div class="enemy-progress">
+      <app-progress-circle [enemy]="enemy" [showTitle]="false" [size]="150" [stroke]="10" [update]="updateScreen" [alwaysShowPercentage]="true"></app-progress-circle>
+    </div>
+  
+    <!-- Enhanced Tracking Section -->
+    <div class="enhanced-tracking ion-padding">
+      
+      <!-- Intensity Slider -->
+      <div class="tracking-section">
+        <ion-label class="section-label">
+          <ion-text color="medium">How intense was it?</ion-text>
+        </ion-label>
+        <div class="intensity-container">
+          <ion-range
+            [(ngModel)]="intensity"
+            min="1"
+            max="5"
+            step="1"
+            snaps="true"
+            ticks="true"
+            color="secondary"
+            class="intensity-slider">
+            <ion-label slot="start">1</ion-label>
+            <ion-label slot="end">5</ion-label>
+          </ion-range>
+          <ion-text class="intensity-label" color="secondary">
+            <strong>{{ getIntensityLabel() }}</strong>
+          </ion-text>
+        </div>
+      </div>
+
+      <!-- Triggers Section -->
+      @if (availableTriggers.length > 0) {
+        <div class="tracking-section">
+          <ion-label class="section-label">
+            <ion-text color="medium">What triggered it?</ion-text>
+          </ion-label>
+          <div class="triggers-grid">
+            @for (trigger of availableTriggers; track trigger) {
+              <ion-chip
+                [outline]="!isTriggerSelected(trigger)"
+                [color]="isTriggerSelected(trigger) ? 'secondary' : 'medium'"
+                (click)="toggleTrigger(trigger)">
+                <ion-label>{{ trigger }}</ion-label>
+                @if (isTriggerSelected(trigger)) {
+                  <ion-icon name="checkmark-circle"></ion-icon>
+                }
+              </ion-chip>
+            }
+          </div>
+        </div>
+      }
+
+    </div>
+  
+    <ion-item lines="full" class="journel-item">
+      <!-- <ion-textarea placeholder="Write short reflection (optional)" rows="4" [(ngModel)]="enemy.journal"></ion-textarea> -->
+      <ion-textarea [(ngModel)]="dailyJournal" color="secondary" autoGrow="true" fill="outline" rows="5"
+        placeholder="Write short reflection (optional)" [counter]="true" maxlength="1000"></ion-textarea>
+    </ion-item>
+  </ion-content>
+  <ion-footer>
+    <ion-grid fixed class="ion-no-padding">
+      <ion-row>
+        <ion-col size="6">
+          <ion-button [disabled]="intensity < 1" (click)="saveCheckIn(true)" color="primary" expand="block" fill="outline" shape="round">
+            Save & Finish
+          </ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-button [disabled]="intensity < 1" color="primary" expand="block" fill="solid" shape="round"
+           (click)="saveCheckIn()">
+            Save & Next
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-footer>
+}

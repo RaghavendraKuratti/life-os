@@ -1,0 +1,39 @@
+
+<div class="ring-card">
+  <div class="ring-wrap">
+    <svg class="ring" [attr.viewBox]="' 0 0 ' + (2*(radius+stroke)) + ' ' + (2*(radius+stroke))">
+      <circle
+      class="track"
+      [attr.cx]="(radius+stroke)"
+      [attr.cy]="(radius+stroke)"
+      [attr.r]="radius"
+      [attr.stroke-width]="stroke"></circle>
+      <circle
+      class="meter"
+      [attr.cx]="(radius+stroke)"
+      [attr.cy]="(radius+stroke)"
+      [attr.r]="radius"
+      [attr.stroke-width]="stroke"
+      [style.strokeDasharray]="circumference"
+      [style.strokeDashoffset]="dashOffset(enemy.progress/3)">
+      </circle>
+    </svg>
+    <div class="ring-center" >
+      <ion-avatar color="primary" class="avatar">
+        <app-meditation-icon [icon]="enemy.key"></app-meditation-icon>
+      </ion-avatar>
+    </div>
+    @if (shouldShowPercentage()) {
+      <div class="percentage-overlay">
+        <ion-label class="percent-value">{{ getProgressDisplay() }}</ion-label>
+      </div>
+    }
+  </div>
+  
+  @if (showTitle) {
+    <div class="label-wrapper">
+      <ion-label class="label-line">{{getFirstLine()}}</ion-label>
+      <ion-label class="label-line">{{getSecondLine()}}</ion-label>
+    </div>
+  }
+</div>

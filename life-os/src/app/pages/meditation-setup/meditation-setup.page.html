@@ -1,0 +1,141 @@
+@if (selectedEnemy) {
+  <ion-header [translucent]="true">
+    <ion-toolbar class="ion-no-border">
+      <ion-buttons slot="start">
+        <ion-button (click)="moveToMeditation()">
+          <ion-icon slot="start" name="chevron-back"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title class="enemy-hero">
+        <!-- <ion-icon [name]="selectedEnemy.icon" color="primary"></ion-icon> -->
+        <ion-item lines="none">
+          <ion-avatar slot="start" color="primary" class="avatar">
+            <app-meditation-icon [icon]="selectedEnemy.key"></app-meditation-icon>
+          </ion-avatar>
+          <ion-text color="primary" class="enemy-title">
+            {{ selectedEnemy.name}}
+          </ion-text>
+        </ion-item>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+}
+
+<ion-content [fullscreen]="true">
+
+  <div class="timer">
+    <div class="timer-card">
+      <svg fill="none" stroke-width="2" class="svg-timer" viewBox="0 0 100 90">
+        <circle class="track" cx="50%" cy="50%" r="30%" stroke="lightgrey"/>
+        <circle class="meter" cx="50%" cy="50%" r="30%" stroke="red" stroke-dasharray="180"
+        [attr.stroke-dashoffset]="strokeOffset"/>
+      </svg>
+      <div class="center-data">
+        <!-- <ion-img class="timer-icon" src="assets/icon/yoga.svg"></ion-img> -->
+        <div class="timer-icon">
+          <app-meditation-icon></app-meditation-icon>
+        </div>
+        <ion-text color="primary">
+          <!-- <div inlineSVG="assets/icon/yoga.svg"></div> -->
+          <span class="time-str">{{timeDisplay}}</span>
+        </ion-text>
+      </div>
+    </div>
+  </div>
+  <app-shloka-card [verse]="varse"></app-shloka-card>
+
+  <!-- Configuration options - only show when meditation is NOT active -->
+  @if (!meditationStarted) {
+    <!-- Sound option -->
+    <ion-card>
+      <ion-card-header class="ion-no-margin ion-no-padding">
+        <ion-card-subtitle>
+          <ion-icon name="musical-note-outline" color="primary"></ion-icon>
+          Choose Your Meditation Sound
+        </ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content class="sound-option">
+        <div class="sound-cards">
+          <div class="sound-card"
+            [class.selected]="selectedSound === 'neural'"
+            (click)="selectSound('neural')">
+            <div class="sound-icon">
+              <ion-icon name="pulse-outline" color="primary"></ion-icon>
+            </div>
+            <div class="sound-info">
+              <h4>Neural Beat</h4>
+              <p>Binaural frequencies for deep focus</p>
+            </div>
+            @if (selectedSound === 'neural') {
+              <ion-icon name="checkmark-circle" color="success" class="check-icon"></ion-icon>
+            }
+          </div>
+
+          <div class="sound-card"
+            [class.selected]="selectedSound === 'om'"
+            (click)="selectSound('om')">
+            <div class="sound-icon">
+              <ion-icon name="radio-outline" color="primary"></ion-icon>
+            </div>
+            <div class="sound-info">
+              <h4>Om Chant</h4>
+              <p>Sacred mantra for spiritual connection</p>
+            </div>
+            @if (selectedSound === 'om') {
+              <ion-icon name="checkmark-circle" color="success" class="check-icon"></ion-icon>
+            }
+          </div>
+
+          <div class="sound-card"
+            [class.selected]="selectedSound === 'silence'"
+            (click)="selectSound('silence')">
+            <div class="sound-icon">
+              <ion-icon name="volume-mute-outline" color="primary"></ion-icon>
+            </div>
+            <div class="sound-info">
+              <h4>Silence</h4>
+              <p>Pure meditation without sound</p>
+            </div>
+            @if (selectedSound === 'silence') {
+              <ion-icon name="checkmark-circle" color="success" class="check-icon"></ion-icon>
+            }
+          </div>
+        </div>
+      </ion-card-content>
+      <ion-card-header  class="ion-no-margin ion-no-padding">
+        <ion-card-subtitle>Duration</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content class="timer-selection">
+      <div class="duration-chips">
+        @for (duration of durations; track $index) {
+          <ion-button (click)="selectDuration($index)" size="small" shape="round" [fill]="duration.selected ? 'solid' : 'outline' "  >
+            <ion-label>{{duration.time}}</ion-label>
+          </ion-button>
+        }
+      </div>
+      </ion-card-content>
+    </ion-card>
+  }
+
+  <!-- <div class="sound-option">
+    <ion-label class="section-lebel">How do you want to start Meditation?</ion-label>
+    <div></div>
+  </div> -->
+
+
+  <!-- Timer Selection -->
+   <!-- <div class="timer-selection">
+    <ion-label class="section-lebel">Duration</ion-label>
+   </div> -->
+</ion-content>
+<ion-footer>
+  @if (meditationStarted) {
+    <ion-button size="small"  class="ion-padding" (click)="stopMeditation()" expand="block" fill="outline" shape="round">
+      Stop Meditation
+    </ion-button>
+  } @else {
+    <ion-button size="small"  class="ion-padding" (click)="startMeditation()" expand="block" fill="solid" shape="round">
+      Start Meditation
+    </ion-button>
+  }
+</ion-footer>

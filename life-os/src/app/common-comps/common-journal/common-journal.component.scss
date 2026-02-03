@@ -1,0 +1,17 @@
+
+ion-card {
+    ion-card-subtitle {
+        font-size: var(--title-font-size);
+    }
+    .avatar {
+        width: var(--icon-font-size);
+        height: var(--icon-font-size);
+        margin: 0.5rem;
+    }
+    ion-textarea {
+        font-size: var(--text-font-size);
+    }
+    ion-button {
+        font-size: var(--text-font-size);
+    }
+}

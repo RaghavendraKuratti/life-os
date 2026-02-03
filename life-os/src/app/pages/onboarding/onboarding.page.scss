@@ -1,0 +1,410 @@
+.onboarding-content {
+  --background: var(--ion-color-light);
+  overflow: hidden; // Prevent scrolling
+  
+  .progress-container {
+    padding: 20px 20px 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background: var(--ion-color-light);
+    border-bottom: 1px solid var(--ion-color-primary);
+    
+    .progress-bar {
+      height: 4px;
+      background: var(--ion-color-tertiary);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 8px;
+      
+      .progress-fill {
+        height: 100%;
+        background: var(--ion-color-primary);
+        transition: width 0.3s ease;
+      }
+    }
+    
+    .progress-text {
+      color: var(--ion-color-dark);
+      font-size: 12px;
+      text-align: center;
+      margin: 0;
+      font-weight: 500;
+    }
+  }
+  
+  .step-container {
+    height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    padding-top: 80px; // Account for fixed progress bar
+    overflow-y: auto; // Allow scrolling within container if needed
+    
+    &::-webkit-scrollbar {
+      display: none; // Hide scrollbar for cleaner look
+    }
+  }
+  
+  .step-content {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    
+    .welcome-icon {
+      font-size: 80px;
+      text-align: center;
+      margin-bottom: 20px;
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    h1 {
+      color: var(--ion-color-dark);
+      font-size: 32px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      color: var(--ion-color-medium);
+      font-size: 16px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+  }
+  
+  // Info Cards (Step 1)
+  .info-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+    
+    .info-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid var(--ion-color-primary);
+      box-shadow: 0 2px 8px rgba(168, 108, 45, 0.1);
+      
+      .card-icon {
+        font-size: 32px;
+        display: block;
+        margin-bottom: 10px;
+        color: var(--ion-color-primary);
+      }
+      
+      h3 {
+        color: var(--ion-color-dark);
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+      
+      p {
+        color: var(--ion-color-medium);
+        font-size: 14px;
+        margin: 0;
+      }
+    }
+  }
+  
+  // Options Grid (Step 2)
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+    
+    .option-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid var(--ion-color-tertiary);
+      box-shadow: 0 2px 8px rgba(168, 108, 45, 0.1);
+      
+      &.selected {
+        background: var(--ion-color-tertiary);
+        border-color: var(--ion-color-primary);
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(168, 108, 45, 0.2);
+      }
+      
+      .option-icon {
+        font-size: 40px;
+        display: block;
+        margin-bottom: 10px;
+        color: var(--ion-color-primary);
+      }
+      
+      h3 {
+        color: var(--ion-color-dark);
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+      
+      p {
+        color: var(--ion-color-medium);
+        font-size: 12px;
+        margin: 0;
+      }
+    }
+  }
+  
+  // Options List (Step 3)
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 30px;
+    max-height: 50vh;
+    overflow-y: auto;
+    padding-right: 5px;
+    
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 2px;
+    }
+    
+    .option-item {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid var(--ion-color-tertiary);
+      box-shadow: 0 2px 8px rgba(168, 108, 45, 0.1);
+      
+      &.selected {
+        background: var(--ion-color-tertiary);
+        border-color: var(--ion-color-primary);
+        box-shadow: 0 4px 12px rgba(168, 108, 45, 0.2);
+      }
+      
+      .option-icon {
+        font-size: 32px;
+        flex-shrink: 0;
+        color: var(--ion-color-primary);
+      }
+      
+      .option-info {
+        flex: 1;
+        
+        h3 {
+          color: var(--ion-color-dark);
+          font-size: 16px;
+          font-weight: 600;
+          margin-bottom: 3px;
+        }
+        
+        p {
+          color: var(--ion-color-medium);
+          font-size: 13px;
+          margin: 0;
+        }
+      }
+      
+      .check-icon {
+        color: var(--ion-color-primary);
+        font-size: 24px;
+        flex-shrink: 0;
+      }
+    }
+  }
+  
+  // Selection Info (Step 3)
+  .selection-info {
+    text-align: center;
+    margin: 16px 0;
+    padding: 12px 16px;
+    background: var(--ion-color-tertiary);
+    border-radius: 8px;
+    border: 1px solid var(--ion-color-primary);
+    
+    p {
+      margin: 0;
+      color: var(--ion-color-primary);
+      font-weight: 600;
+      font-size: 14px;
+    }
+  }
+  
+  // Reminder Setup (Step 4)
+  .reminder-setup {
+    margin-bottom: 30px;
+    
+    .toggle-item {
+      --background: white;
+      --border-radius: 12px;
+      margin-bottom: 20px;
+      border: 1px solid var(--ion-color-primary);
+      
+      ion-label {
+        h2 {
+          color: var(--ion-color-dark);
+          font-weight: 600;
+          margin-bottom: 5px;
+        }
+        
+        p {
+          color: var(--ion-color-medium);
+          font-size: 13px;
+        }
+      }
+      
+      ion-toggle {
+        --background: var(--ion-color-tertiary);
+        --background-checked: var(--ion-color-primary);
+        --handle-background: var(--ion-color-primary);
+        --handle-background-checked: white;
+      }
+    }
+    
+    .time-picker {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 15px;
+      border: 1px solid var(--ion-color-primary);
+      
+      ion-item {
+        --background: transparent;
+        --color: var(--ion-color-dark);
+        
+        ion-label {
+          color: var(--ion-color-dark);
+          font-weight: 600;
+          margin-bottom: 10px;
+        }
+        
+        ion-datetime-button {
+          --background: var(--ion-color-tertiary);
+          --color: var(--ion-color-dark);
+        }
+      }
+    }
+    
+    .reminder-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      background: var(--ion-color-tertiary);
+      border-radius: 8px;
+      border: 1px solid var(--ion-color-primary);
+      
+      ion-icon {
+        color: var(--ion-color-primary);
+        font-size: 20px;
+        flex-shrink: 0;
+      }
+      
+      p {
+        color: var(--ion-color-medium);
+        font-size: 13px;
+        margin: 0;
+      }
+    }
+  }
+  
+  // Buttons
+  .button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    
+    .primary-button {
+      --background: var(--ion-color-primary);
+      --color: white;
+      --border-radius: 12px;
+      height: 50px;
+      font-weight: 600;
+      text-transform: none;
+      font-size: 16px;
+      box-shadow: 0 4px 12px rgba(168, 108, 45, 0.3);
+      
+      &:disabled {
+        opacity: 0.5;
+      }
+    }
+    
+    .back-button,
+    .skip-button {
+      --color: var(--ion-color-primary);
+      --border-radius: 12px;
+      height: 50px;
+      font-weight: 500;
+      text-transform: none;
+      font-size: 16px;
+      border: 1px solid var(--ion-color-primary);
+    }
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .onboarding-content {
+    --background: var(--ion-color-dark);
+    
+    .progress-container {
+      background: var(--ion-color-dark);
+      border-bottom-color: var(--ion-color-primary);
+    }
+    
+    .step-content {
+      h1 {
+        color: var(--ion-color-light);
+      }
+      
+      .subtitle {
+        color: var(--ion-color-medium);
+      }
+    }
+    
+    .info-card,
+    .option-card,
+    .option-item,
+    .time-picker,
+    .toggle-item {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--ion-color-primary);
+      
+      h3 {
+        color: var(--ion-color-light);
+      }
+      
+      p {
+        color: var(--ion-color-medium);
+      }
+    }
+  }
+}

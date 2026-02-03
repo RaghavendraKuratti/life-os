@@ -1,0 +1,60 @@
+
+@if (verse) {
+  <ion-card class="shloka-card" [class.read]="isRead">
+    <ion-card-header class="ion-no-padding ion-no-margin">
+      <ion-card-subtitle class="shloka-header">
+        Chapter {{ verse.chapter }}, Shloka {{ verse.shloka }}
+        @if (isRead) {
+          <ion-icon name="checkmark-circle" color="success" class="read-icon"></ion-icon>
+        }
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content class="ion-no-padding shloka-content">
+       <div class="sanskrit-shloka">
+        <ion-label color="primary"> {{ verse.text }}</ion-label>
+       </div>
+      <div class="eng-trs">{{ verse.translation }}</div>
+    </ion-card-content>
+    <ion-footer >
+      <ion-button
+        size="small"
+        fill="solid"
+        shape="round"
+        (click)="onMarkAsRead()"
+        [disabled]="isRead || loading">
+        @if (loading) {
+          <ion-spinner name="crescent" slot="start"></ion-spinner>
+          Marking...
+        } @else if (isRead) {
+          <ion-icon slot="start" name="checkmark-circle"></ion-icon>
+          Read
+        } @else {
+          Mark As Read
+        }
+      </ion-button>
+    </ion-footer>
+  </ion-card>
+} @else {
+
+  <ion-card class="shloka-card">
+    <ion-card-header class="ion-no-padding ion-no-margin">
+      <ion-card-subtitle class="shloka-header">
+        <ion-skeleton-text animated ></ion-skeleton-text>
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content class="ion-no-padding shloka-content">
+      <!-- <div><b>Chapter {{ verse?.chapter }}, Shloka {{ verse?.shloka }}</b></div> -->
+       <div class="sanskrit-shloka">
+        <ion-label color="primary"> 
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-label>
+       </div>
+      <div class="eng-trs">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </div>
+    </ion-card-content>
+    <ion-footer >
+      <ion-skeleton-text animated style="width: 30%; margin: auto;"></ion-skeleton-text>
+    </ion-footer>
+  </ion-card>
+}

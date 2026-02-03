@@ -1,0 +1,111 @@
+<ion-card>
+  <ion-card-subtitle class="ion-padding ion-no-margin">
+    📝 Reflective Journaling
+  </ion-card-subtitle>
+  <ion-card-content class="ion-no-padding" style="padding: 5px;">
+    
+    <!-- Mood Before (Optional) -->
+    @if (showMoodTracking) {
+      <div style="padding: 10px;">
+        <ion-text color="medium">
+          <p style="margin: 5px 0; font-size: 0.9em;">How do you feel right now? (Optional)</p>
+        </ion-text>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+          @for (mood of moods; track mood.value) {
+            <ion-button
+              size="small"
+              [fill]="moodBefore === mood.value ? 'solid' : 'outline'"
+              (click)="selectMood('before', mood.value)"
+              style="--border-radius: 20px;">
+              <span style="font-size: 1.5em;">{{mood.emoji}}</span>
+            </ion-button>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Enemy Selection -->
+    <ion-grid fixed class="ion-no-padding">
+      <ion-row>
+        @for (enemy of sixEnemies; track $index) {
+          <ion-col size="2" style="text-align: center;">
+            <ion-button (click)="selectEnemy($index)" size="small" shape="round" [fill]="enemy.selected ? 'solid' : 'outline'">
+              <ion-avatar slot="icon-only" color="primary" class="avatar">
+                <app-meditation-icon [active]="enemy.selected" [icon]="enemy.key"></app-meditation-icon>
+              </ion-avatar>
+            </ion-button>
+          </ion-col>
+        }
+      </ion-row>
+    </ion-grid>
+
+    <!-- Smart Prompts -->
+    @if (showPrompts && currentPrompts.length > 0) {
+      <div style="padding: 10px; background: rgba(200, 168, 112, 0.05); border-radius: 8px; margin: 10px;">
+        <ion-text color="primary">
+          <p style="margin: 5px 0; font-size: 0.9em; font-weight: 500;">💡 Reflection Prompts:</p>
+        </ion-text>
+        @for (prompt of currentPrompts; track $index) {
+          <ion-chip (click)="usePrompt(prompt)" style="cursor: pointer; margin: 5px;">
+            <ion-label style="font-size: 0.85em;">{{prompt}}</ion-label>
+          </ion-chip>
+        }
+      </div>
+    }
+
+    <!-- Journal Textarea -->
+    <ion-textarea
+      style="padding: 0px 10px;"
+      [(ngModel)]="dailyJournal"
+      color="secondary"
+      autoGrow="true"
+      fill="outline"
+      rows="3"
+      placeholder="Write your reflection... (Tap prompts above to get started)"
+      [counter]="true"
+      maxlength="1000"
+      helperText="Minimum 20 characters">
+    </ion-textarea>
+
+    <!-- Mood After (Optional) -->
+    @if (showMoodTracking && dailyJournal && dailyJournal.length >= 20) {
+      <div style="padding: 10px;">
+        <ion-text color="medium">
+          <p style="margin: 5px 0; font-size: 0.9em;">How do you feel after writing? (Optional)</p>
+        </ion-text>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+          @for (mood of moods; track mood.value) {
+            <ion-button
+              size="small"
+              [fill]="moodAfter === mood.value ? 'solid' : 'outline'"
+              (click)="selectMood('after', mood.value)"
+              style="--border-radius: 20px;">
+              <span style="font-size: 1.5em;">{{mood.emoji}}</span>
+            </ion-button>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Helper Text -->
+    @if (helperText) {
+      <ion-text color="primary">
+        <p style="padding: 10px; text-align: center; margin: 0;">{{helperText}}</p>
+      </ion-text>
+    }
+
+    <!-- Save Button -->
+    <ion-button
+      size="small"
+      [disabled]="selectedTags.length == 0 || !(dailyJournal && dailyJournal.length >= 20)"
+      (click)="saveDailyJournel()"
+      expand="block"
+      fill="solid"
+      shape="round"
+      style="margin: 10px;">
+      <ion-icon name="save-outline" slot="start"></ion-icon>
+      Save My Reflection
+    </ion-button>
+  </ion-card-content>
+</ion-card>
+

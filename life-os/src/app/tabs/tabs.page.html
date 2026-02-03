@@ -1,0 +1,31 @@
+<ion-tabs>
+
+  <ion-tab-bar slot="bottom" class="custom-tab-bar">
+    <ion-tab-button (click)="onSelected('home')" tab="home" href="tabs/home">
+      <ion-icon aria-hidden="true"  [name]="tabSelected == 'home' ? 'home' : 'home-outline'"></ion-icon>
+      <ion-label>Home</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button (click)="onSelected('meditation')" tab="meditation" href="tabs/meditation">
+      <ion-icon aria-hidden="true"  [name]="tabSelected == 'meditation' ? 'infinite' : 'infinite-outline'"></ion-icon>
+      <ion-label>Meditation</ion-label>
+    </ion-tab-button>
+
+    <!-- Journal Tab Button (Center) -->
+    <ion-tab-button (click)="openJournal()" class="journal-tab-button">
+      <ion-icon name="add"></ion-icon>
+      <ion-label>Journal</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button (click)="onSelected('analytics')" tab="analytics" href="tabs/analytics">
+      <ion-icon aria-hidden="true"  [name]="tabSelected == 'analytics' ? 'analytics' : 'analytics-outline'"></ion-icon>
+      <ion-label>Analytics</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button (click)="onSelected('profile')" tab="profile" href="tabs/profile">
+      <ion-icon aria-hidden="true"  [name]="tabSelected == 'profile' ? 'person' : 'person-outline'"></ion-icon>
+      <ion-label>Profile</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+
+</ion-tabs>

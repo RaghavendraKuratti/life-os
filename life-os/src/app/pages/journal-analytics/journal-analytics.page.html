@@ -1,0 +1,218 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>📊 Journal Analytics</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Journal Analytics</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Loading your journal insights...</p>
+    </div>
+  }
+
+  <!-- Analytics Content -->
+  @if (!loading && analytics) {
+    <div class="analytics-container">
+      
+      <!-- Time Period Selector -->
+      <ion-card class="period-selector">
+        <ion-card-content>
+          <ion-segment [value]="selectedDays.toString()" (ionChange)="onDaysChange($event)">
+            <ion-segment-button value="7">
+              <ion-label>7 Days</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="30">
+              <ion-label>30 Days</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="90">
+              <ion-label>90 Days</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Summary Stats -->
+      <div class="stats-grid">
+        <ion-card class="stat-card">
+          <ion-card-content>
+            <div class="stat-icon">📝</div>
+            <div class="stat-value">{{analytics.totalEntries}}</div>
+            <div class="stat-label">Total Entries</div>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card class="stat-card">
+          <ion-card-content>
+            <div class="stat-icon">🔥</div>
+            <div class="stat-value">{{analytics.streak}}</div>
+            <div class="stat-label">Day Streak</div>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card class="stat-card">
+          <ion-card-content>
+            <div class="stat-icon">📏</div>
+            <div class="stat-value">{{analytics.averageWordCount}}</div>
+            <div class="stat-label">Avg Words</div>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card class="stat-card">
+          <ion-card-content>
+            <div class="stat-icon">📈</div>
+            <div class="stat-value">{{analytics.moodTrends?.improvement || 0}}%</div>
+            <div class="stat-label">Mood Boost</div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      <!-- Enemy Distribution -->
+      @if (enemyChartData.length > 0) {
+        <ion-card class="chart-card">
+          <ion-card-header>
+            <ion-card-title>🎯 Enemies Reflected On</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            @for (item of enemyChartData; track item.enemy) {
+              <div class="chart-bar-container">
+                <div class="chart-label">
+                  <span class="enemy-name">{{getEnemyName(item.enemy)}}</span>
+                  <span class="enemy-count">{{item.count}}</span>
+                </div>
+                <div class="chart-bar-wrapper">
+                  <div class="chart-bar" [style.width.%]="item.percentage"></div>
+                </div>
+              </div>
+            }
+          </ion-card-content>
+        </ion-card>
+      }
+
+      <!-- Writing Frequency (Last 7 Days) -->
+      @if (frequencyData.length > 0) {
+        <ion-card class="chart-card">
+          <ion-card-header>
+            <ion-card-title>📅 Writing Frequency (Last 7 Days)</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="frequency-chart">
+              @for (day of frequencyData; track day.date) {
+                <div class="frequency-bar-container">
+                  <div class="frequency-bar" 
+                       [style.height.%]="day.count > 0 ? (day.count / getMaxCount(frequencyData)) * 100 : 5">
+                    @if (day.count > 0) {
+                      <span class="frequency-count">{{day.count}}</span>
+                    }
+                  </div>
+                  <div class="frequency-label">{{day.label}}</div>
+                </div>
+              }
+            </div>
+          </ion-card-content>
+        </ion-card>
+      }
+
+      <!-- Mood Trends -->
+      @if (moodChartData.before.length > 0 || moodChartData.after.length > 0) {
+        <ion-card class="chart-card">
+          <ion-card-header>
+            <ion-card-title>😊 Mood Trends</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="mood-comparison">
+              <div class="mood-section">
+                <h4>Before Writing</h4>
+                @for (mood of moodChartData.before; track mood.mood) {
+                  <div class="mood-item">
+                    <span class="mood-emoji">{{getMoodEmoji(mood.mood)}}</span>
+                    <span class="mood-label">{{mood.mood}}</span>
+                    <span class="mood-count">{{mood.count}}</span>
+                  </div>
+                }
+              </div>
+              <div class="mood-section">
+                <h4>After Writing</h4>
+                @for (mood of moodChartData.after; track mood.mood) {
+                  <div class="mood-item">
+                    <span class="mood-emoji">{{getMoodEmoji(mood.mood)}}</span>
+                    <span class="mood-label">{{mood.mood}}</span>
+                    <span class="mood-count">{{mood.count}}</span>
+                  </div>
+                }
+              </div>
+            </div>
+            @if (analytics.moodTrends?.improvement > 0) {
+              <div class="mood-insight">
+                <ion-icon name="trending-up" color="success"></ion-icon>
+                <p>Writing improved your mood {{analytics.moodTrends.improvement}}% of the time! 🎉</p>
+              </div>
+            }
+          </ion-card-content>
+        </ion-card>
+      }
+
+      <!-- Recent Entries -->
+      @if (entries.length > 0) {
+        <ion-card class="entries-card">
+          <ion-card-header>
+            <ion-card-title>📖 Recent Entries</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            @for (entry of entries; track entry.id) {
+              <div class="entry-item">
+                <div class="entry-header">
+                  <div class="entry-tags">
+                    @for (tag of entry.tags; track tag) {
+                      <ion-chip size="small">
+                        <ion-label>{{getEnemyName(tag)}}</ion-label>
+                      </ion-chip>
+                    }
+                  </div>
+                  <div class="entry-date">{{formatDate(entry.createdAt)}}</div>
+                </div>
+                <div class="entry-preview">
+                  {{entry.note.substring(0, 150)}}{{entry.note.length > 150 ? '...' : ''}}
+                </div>
+                <div class="entry-meta">
+                  <span>{{entry.wordCount}} words</span>
+                  @if (entry.moodBefore && entry.moodAfter) {
+                    <span class="mood-change">
+                      {{getMoodEmoji(entry.moodBefore)}} → {{getMoodEmoji(entry.moodAfter)}}
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+          </ion-card-content>
+        </ion-card>
+      }
+
+      <!-- Empty State -->
+      @if (analytics.totalEntries === 0) {
+        <ion-card class="empty-state">
+          <ion-card-content>
+            <ion-icon name="journal-outline" size="large"></ion-icon>
+            <h3>No Journal Entries Yet</h3>
+            <p>Start journaling to see your insights and patterns!</p>
+            <ion-button routerLink="/tabs/home" fill="solid" shape="round">
+              Start Journaling
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      }
+
+    </div>
+  }
+</ion-content>

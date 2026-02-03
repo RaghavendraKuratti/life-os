@@ -1,0 +1,164 @@
+ion-item {
+    --background: transparent;
+    --border-color: transparent;
+    ion-back-button{
+        font-size: var(--title-font-size);
+        font-weight: var(--title-font-weight);
+    }
+    ion-label {
+        font-size: var(--title-font-size);
+        font-weight: var(--title-font-weight);
+    }
+    .app-icon {
+        --background: transparent;
+
+        .app-img {
+            width: var(--icon-font-size);
+            height: var(--icon-font-size);
+        }
+    }
+}
+
+.enemy-progress {
+    width: 100%;
+    max-width: 200px;
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    app-progress-circle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+ion-label {
+    font-size: var(--title-font-size);
+    font-weight: var(--title-font-weight);
+}
+.survey-row {
+    width: 100%;
+    max-width: 640px;
+    padding: 8px 5px 14px;
+
+    ion-segment {
+        --background: transparent;
+
+        // --indicator-background: var(--ion-color-tertiary);
+        ion-segment-button {
+            // font-weight: 600;
+            font-size: var(--title-font-size);
+            font-weight: var(--title-font-weight);
+        }
+    }
+}
+ion-textarea {
+    font-size: var(--title-font-size);
+}
+
+ion-segment-button::part(indicator-background) {
+    background: var(--ion-color-primary);
+}
+
+ion-segment-button::part(native) {
+    color: var(--ion-color-primary);
+}
+
+.segment-button-checked::part(native) {
+    color: #fff;
+}
+
+ion-segment-button::part(indicator-background) {
+    border-radius: 20px;
+}
+
+// Enhanced Tracking Styles
+.enhanced-tracking {
+    background: var(--ion-color-light);
+    border-radius: 16px;
+    margin: 16px;
+    padding: 16px;
+
+    .tracking-section {
+        margin-bottom: 24px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-label {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    }
+
+    // Intensity Slider Styles
+    .intensity-container {
+        .intensity-slider {
+            padding: 8px 0;
+            
+            ion-label {
+                font-size: 12px;
+                font-weight: 600;
+            }
+        }
+
+        .intensity-label {
+            display: block;
+            text-align: center;
+            margin-top: 8px;
+            font-size: 16px;
+            min-height: 24px;
+        }
+    }
+
+    // Triggers Grid Styles
+    .triggers-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 8px;
+
+        ion-chip {
+            margin: 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 13px;
+            height: 32px;
+
+            &:active {
+                transform: scale(0.95);
+            }
+
+            ion-icon {
+                margin-left: 4px;
+                font-size: 16px;
+            }
+        }
+    }
+}
+
+// Responsive adjustments
+@media (max-width: 360px) {
+    .enhanced-tracking {
+        .triggers-grid {
+            ion-chip {
+                font-size: 11px;
+                height: 28px;
+            }
+        }
+
+        ion-segment {
+            ion-segment-button {
+                .duration-label {
+                    font-size: 10px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,48 @@
+// Custom Tab Bar Styling
+.custom-tab-bar {
+  --background: var(--ion-background-color);
+  border-top: 1px solid rgba(200, 168, 112, 0.1);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+// Regular Tab Buttons
+ion-tab-button:not(.journal-tab-button) {
+  --color: var(--ion-color-medium);
+  --color-selected: #C8A870;
+  
+  ion-icon {
+    font-size: 24px;
+  }
+  
+  ion-label {
+    font-size: 0.7em;
+    margin-top: 4px;
+  }
+}
+
+// Journal Tab Button (Center with FAB style)
+.journal-tab-button {
+  --color: #C8A870;
+  --color-selected: #C8A870;
+  
+  ion-icon {
+    font-size: 28px !important;
+    background: linear-gradient(135deg, #C8A870 0%, #D4B886 100%);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 4px 12px rgba(200, 168, 112, 0.4);
+  }
+  
+  ion-label {
+    font-size: 0.7em;
+    margin-top: 4px;
+    color: #C8A870;
+    font-weight: 500;
+  }
+}
